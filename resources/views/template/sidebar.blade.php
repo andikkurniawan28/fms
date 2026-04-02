@@ -52,9 +52,7 @@
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
     </div>
-
     <div class="menu-inner-shadow"></div>
-
     <ul class="menu-inner py-1">
         <!-- Home -->
         <li class="menu-item @yield('home_active')">
@@ -63,9 +61,8 @@
                 <div data-i18n="Home">Home</div>
             </a>
         </li>
-
         <!-- Transaksi -->
-        <li class="menu-item">
+        <li class="menu-item @yield('transaksi_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-receipt"></i>
                 <div data-i18n="Transaksi">Transaksi</div>
@@ -83,9 +80,8 @@
                 </li>
             </ul>
         </li>
-
         <!-- Master -->
-        <li class="menu-item">
+        <li class="menu-item @yield('master_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-folder"></i>
                 <div data-i18n="Master">Master</div>
@@ -111,6 +107,11 @@
                         <div data-i18n="packaging">Packaging</div>
                     </a>
                 </li>
+                <li class="menu-item @yield('product_active')">
+                    <a href="{{ route('product.index') }}" class="menu-link">
+                        <div data-i18n="product">Produk</div>
+                    </a>
+                </li>
                 <li class="menu-item @yield('termin_active')">
                     <a href="{{ route('termin.index') }}" class="menu-link">
                         <div data-i18n="termin">Termin</div>
@@ -118,6 +119,5 @@
                 </li>
             </ul>
         </li>
-
     </ul>
 </aside>

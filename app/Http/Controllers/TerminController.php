@@ -4,62 +4,76 @@ namespace App\Http\Controllers;
 
 use App\Models\Termin;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class TerminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = Termin::query();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('termin.edit', $row->id);
+                    $deleteUrl = route('termin.destroy', $row->id);
+
+                    return '<div class="btn-group" role="group">
+                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
+                                    ' . csrf_field() . method_field('DELETE') . '
+                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                </form>
+                            </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('termin.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('termin.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:termins,name',
+        ]);
+
+        Termin::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('termin.index')->with('success', 'termin berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Termin $termin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Termin $termin)
     {
-        //
+        return view('termin.edit', compact('termin'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Termin $termin)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:termins,name,' . $termin->id,
+        ]);
+
+        $termin->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('termin.index')->with('success', 'termin berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Termin $termin)
     {
-        //
+        $termin->delete();
+
+        return redirect()->route('termin.index')->with('success', 'termin berhasil dihapus.');
     }
 }

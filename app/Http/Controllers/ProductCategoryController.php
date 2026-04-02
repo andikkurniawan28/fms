@@ -4,62 +4,76 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class ProductCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = ProductCategory::query();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('product_category.edit', $row->id);
+                    $deleteUrl = route('product_category.destroy', $row->id);
+
+                    return '<div class="btn-group" role="group">
+                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
+                                    ' . csrf_field() . method_field('DELETE') . '
+                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                </form>
+                            </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('product_category.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('product_category.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:product_categories,name',
+        ]);
+
+        ProductCategory::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('product_category.index')->with('success', 'kategori produk berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProductCategory $productCategory)
+    public function edit(ProductCategory $product_category)
     {
-        //
+        return view('product_category.edit', compact('product_category'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ProductCategory $productCategory)
+    public function update(Request $request, ProductCategory $product_category)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:product_categories,name,' . $product_category->id,
+        ]);
+
+        $product_category->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('product_category.index')->with('success', 'kategori produk berhasil diperbarui.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ProductCategory $productCategory)
+    public function destroy(ProductCategory $product_category)
     {
-        //
-    }
+        $product_category->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ProductCategory $productCategory)
-    {
-        //
+        return redirect()->route('product_category.index')->with('success', 'kategori produk berhasil dihapus.');
     }
 }

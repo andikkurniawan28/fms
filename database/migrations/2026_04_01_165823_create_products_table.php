@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_category_id')->constrained();
             $table->foreignId('packaging_id')->constrained();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->double('price');
             $table->double('base_price')->default(0);
             $table->double('cost')->default(0);
