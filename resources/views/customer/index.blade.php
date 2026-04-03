@@ -21,7 +21,7 @@
                         <tr>
                             <th>Nama</th>
                             <th>WhatsApp</th>
-                            <th>Piutang</th>
+                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -43,7 +43,7 @@
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'whatsapp', name: 'whatsapp' },
-                { data: 'receivable', name: 'receivable' },
+                { data: 'description', name: 'description' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

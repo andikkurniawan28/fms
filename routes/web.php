@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApiHomeController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -21,13 +23,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('login', [AuthController::class, 'loginProcess'])->name('loginProcess');
 
-Route::get('/', HomeController::class)->name('home');
-Route::resource('order', OrderController::class);
-Route::resource('payment', PaymentController::class);
-Route::resource('user', UserController::class);
-Route::resource('customer', CustomerController::class);
-Route::resource('product_category', ProductCategoryController::class);
-Route::resource('packaging', PackagingController::class);
-Route::resource('termin', TerminController::class);
-Route::resource('product', ProductController::class);
+Route::get('home_api', ApiHomeController::class)->name('home_api');
+
+Route::get('/', HomeController::class)->name('home')->middleware(['auth']);
+Route::resource('order', OrderController::class)->middleware(['auth']);
+Route::resource('payment', PaymentController::class)->middleware(['auth']);
+Route::resource('user', UserController::class)->middleware(['auth']);
+Route::resource('customer', CustomerController::class)->middleware(['auth']);
+Route::resource('product_category', ProductCategoryController::class)->middleware(['auth']);
+Route::resource('packaging', PackagingController::class)->middleware(['auth']);
+Route::resource('termin', TerminController::class)->middleware(['auth']);
+Route::resource('product', ProductController::class)->middleware(['auth']);

@@ -14,7 +14,7 @@
 
                 {{-- Kategori --}}
                 <div class="mb-3">
-                    <label class="form-label">Kategori</label>
+                    <label class="form-label">Kategori Produk</label>
                     <select name="product_category_id" class="form-select select2" required>
                         <option value="">-- Pilih Kategori --</option>
                         @foreach ($categories as $category)
@@ -35,7 +35,7 @@
                 @foreach($packagings as $p)
                 <div class="mb-3">
                     <label class="form-label">Harga Jual (Packaging {{ $p->name }})</label>
-                    <input type="number" step="0.01" name="price" class="form-control" value="{{ old('price') }}" required>
+                    <input type="number" step="0.01" name="price_{{ $p->id }}" class="form-control" value="{{ old('price') }}" required>
                 </div>
                 @endforeach
 

@@ -23,6 +23,16 @@ class ProductController extends Controller
                 ->addColumn('packaging', function ($row) {
                     return $row->packaging->name ?? '-';
                 })
+                ->filterColumn('category', function ($query, $keyword) {
+                    $query->whereHas('productCategory', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('packaging', function ($query, $keyword) {
+                    $query->whereHas('packaging', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
                 ->addColumn('action', function ($row) {
                     $editUrl = route('product.edit', $row->id);
                     $deleteUrl = route('product.destroy', $row->id);
@@ -54,26 +64,32 @@ class ProductController extends Controller
     {
         $request->validate([
             'product_category_id' => 'required|exists:product_categories,id',
-            'packaging_ids' => 'required|array',
-            'packaging_ids.*' => 'exists:packagings,id',
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'base_price' => 'nullable|numeric',
-            'cost' => 'nullable|numeric',
         ]);
 
-        foreach ($request->packaging_ids as $packagingId) {
+        // Ambil semua packaging
+        $packagings = Packaging::all();
+
+        foreach ($packagings as $packaging) {
+
+            $priceField = 'price_' . $packaging->id;
+
+            // Skip kalau tidak diisi (optional, kalau mau wajib bisa divalidasi)
+            if (!$request->filled($priceField)) {
+                continue;
+            }
+
             Product::create([
                 'product_category_id' => $request->product_category_id,
-                'packaging_id' => $packagingId,
+                'packaging_id' => $packaging->id,
                 'name' => $request->name,
-                'price' => $request->price,
-                'base_price' => $request->base_price ?? 0,
-                'cost' => $request->cost ?? 0,
+                'price' => $request->$priceField,
+                'base_price' => 0,
+                'cost' => 0,
             ]);
         }
 
-        return redirect()->route('product.index')->with('success', 'produk berhasil ditambahkan.');
+        return redirect()->route('product.index')->with('success', 'produk berhasil ditambahkan untuk semua packaging.');
     }
 
     public function edit(Product $product)
@@ -88,7 +104,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'product_category_id' => 'required|exists:product_categories,id',
-            'packaging_id' => 'required|exists:packagings,id',
+            // 'packaging_id' => 'required|exists:packagings,id',
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'base_price' => 'nullable|numeric',
@@ -97,7 +113,7 @@ class ProductController extends Controller
 
         $product->update([
             'product_category_id' => $request->product_category_id,
-            'packaging_id' => $request->packaging_id,
+            // 'packaging_id' => $request->packaging_id,
             'name' => $request->name,
             'price' => $request->price,
             'base_price' => $request->base_price ?? 0,

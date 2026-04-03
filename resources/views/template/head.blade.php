@@ -7,7 +7,7 @@
 <meta name="description" content="" />
 
 <!-- Favicon -->
-<link rel="icon" type="image/x-icon" href="/sneat/assets/img/favicon/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="/fms/public/sneat/assets/img/favicon/favicon.ico" />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,26 +17,26 @@
     rel="stylesheet" />
 
 <!-- Icons. Uncomment required icon fonts -->
-<link rel="stylesheet" href="/sneat/assets/vendor/fonts/boxicons.css" />
+<link rel="stylesheet" href="/fms/public/sneat/assets/vendor/fonts/boxicons.css" />
 
 <!-- Core CSS -->
-<link rel="stylesheet" href="/sneat/assets/vendor/css/core.css" class="template-customizer-core-css" />
-<link rel="stylesheet" href="/sneat/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-<link rel="stylesheet" href="/sneat/assets/css/demo.css" />
+<link rel="stylesheet" href="/fms/public/sneat/assets/vendor/css/core.css" class="template-customizer-core-css" />
+<link rel="stylesheet" href="/fms/public/sneat/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+<link rel="stylesheet" href="/fms/public/sneat/assets/css/demo.css" />
 
 <!-- Vendors CSS -->
-<link rel="stylesheet" href="/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+<link rel="stylesheet" href="/fms/public/sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-<link rel="stylesheet" href="/sneat/assets/vendor/libs/apex-charts/apex-charts.css" />
+<link rel="stylesheet" href="/fms/public/sneat/assets/vendor/libs/apex-charts/apex-charts.css" />
 
 <!-- Page CSS -->
 
 <!-- Helpers -->
-<script src="/sneat/assets/vendor/js/helpers.js"></script>
+<script src="/fms/public/sneat/assets/vendor/js/helpers.js"></script>
 
 <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-<script src="/sneat/assets/js/config.js"></script>
+<script src="/fms/public/sneat/assets/js/config.js"></script>
 
 {{-- DataTables Bootstrap 5 skin --}}
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">

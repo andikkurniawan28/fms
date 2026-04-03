@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="{{ route('home') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -94,7 +94,7 @@
                 </li>
                 <li class="menu-item @yield('customer_active')">
                     <a href="{{ route('customer.index') }}" class="menu-link">
-                        <div data-i18n="Customer">Pelanggan</div>
+                        <div data-i18n="Customer">Customer</div>
                     </a>
                 </li>
                 <li class="menu-item @yield('product_category_active')">
