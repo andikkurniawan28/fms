@@ -143,7 +143,7 @@ class OrderController extends Controller
             // 🔥 Payment (kalau ada pembayaran)
             if ($paid > 0) {
                 Payment::create([
-                    'code' => 'PAY-' . date('YmdHis'),
+                    'code' => 'PAY' . date('YmdHis'),
                     'date' => $request->date,
                     'customer_id' => $request->customer_id,
                     'user_id' => auth()->id(),
@@ -265,7 +265,7 @@ class OrderController extends Controller
                     ]);
                 } else {
                     Payment::create([
-                        'code' => 'PAY-' . date('YmdHis'),
+                        'code' => 'PAY' . date('YmdHis'),
                         'date' => $request->date,
                         'customer_id' => $request->customer_id,
                         'user_id' => auth()->id(),

@@ -30,11 +30,62 @@ Route::post('login', [AuthController::class, 'loginProcess'])->name('loginProces
 Route::get('home_api', ApiHomeController::class)->name('home_api');
 
 Route::get('/', HomeController::class)->name('home')->middleware(['auth']);
-Route::resource('order', OrderController::class)->middleware(['auth']);
-Route::resource('payment', PaymentController::class)->middleware(['auth']);
-Route::resource('user', UserController::class)->middleware(['auth']);
-Route::resource('customer', CustomerController::class)->middleware(['auth']);
-Route::resource('product_category', ProductCategoryController::class)->middleware(['auth']);
-Route::resource('packaging', PackagingController::class)->middleware(['auth']);
-Route::resource('termin', TerminController::class)->middleware(['auth']);
-Route::resource('product', ProductController::class)->middleware(['auth']);
+
+Route::middleware(['auth'])->group(function () {
+
+    /**
+     * =========================
+     * OWNER (FULL ACCESS)
+     * =========================
+     */
+    Route::middleware(['role:Owner'])->group(function () {
+        Route::resource('order', OrderController::class);
+        Route::resource('payment', PaymentController::class);
+        Route::resource('user', UserController::class);
+        Route::resource('customer', CustomerController::class);
+        Route::resource('product_category', ProductCategoryController::class);
+        Route::resource('packaging', PackagingController::class);
+        Route::resource('termin', TerminController::class);
+        Route::resource('product', ProductController::class);
+    });
+
+    /**
+     * =========================
+     * ADMIN (LIMITED ACCESS)
+     * =========================
+     */
+    Route::middleware(['role:Admin'])->group(function () {
+
+        // ORDER → index, create, store, show
+        Route::resource('order', OrderController::class)->only([
+            'index', 'create', 'store', 'show'
+        ]);
+
+        // PAYMENT → index, create, store, show
+        Route::resource('payment', PaymentController::class)->only([
+            'index', 'create', 'store', 'show'
+        ]);
+
+        // CUSTOMER → index, create, store
+        Route::resource('customer', CustomerController::class)->only([
+            'index', 'create', 'store'
+        ]);
+
+        // PRODUCT CATEGORY → index, create, store
+        Route::resource('product_category', ProductCategoryController::class)->only([
+            'index', 'create', 'store'
+        ]);
+
+        // PACKAGING → index, create, store
+        Route::resource('packaging', PackagingController::class)->only([
+            'index', 'create', 'store'
+        ]);
+
+        // PRODUCT → index, create, store
+        Route::resource('product', ProductController::class)->only([
+            'index', 'create', 'store'
+        ]);
+
+        // ❌ tidak boleh akses user & termin
+    });
+});

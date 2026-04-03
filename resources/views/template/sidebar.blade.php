@@ -53,71 +53,113 @@
         </a>
     </div>
     <div class="menu-inner-shadow"></div>
+    @php
+        $role = auth()->user()->role->name ?? null;
+    @endphp
+
     <ul class="menu-inner py-1">
+
         <!-- Home -->
         <li class="menu-item @yield('home_active')">
             <a href="{{ route('home') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div data-i18n="Home">Home</div>
+                <div>Home</div>
             </a>
         </li>
+
         <!-- Transaksi -->
         <li class="menu-item @yield('transaksi_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-receipt"></i>
-                <div data-i18n="Transaksi">Transaksi</div>
+                <div>Transaksi</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item @yield('order_active')">
-                    <a href="{{ route('order.index') }}" class="menu-link">
-                        <div data-i18n="Order">Order</div>
-                    </a>
-                </li>
-                <li class="menu-item @yield('payment_active')">
-                    <a href="{{ route('payment.index') }}" class="menu-link">
-                        <div data-i18n="Pelunasan">Pelunasan</div>
-                    </a>
-                </li>
+
+                {{-- ORDER (Owner & Admin) --}}
+                @if (in_array($role, ['Owner', 'Admin']))
+                    <li class="menu-item @yield('order_active')">
+                        <a href="{{ route('order.index') }}" class="menu-link">
+                            <div>Order</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- PAYMENT (Owner & Admin) --}}
+                @if (in_array($role, ['Owner', 'Admin']))
+                    <li class="menu-item @yield('payment_active')">
+                        <a href="{{ route('payment.index') }}" class="menu-link">
+                            <div>Pelunasan</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
+
         <!-- Master -->
         <li class="menu-item @yield('master_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-folder"></i>
-                <div data-i18n="Master">Master</div>
+                <div>Master</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item @yield('user_active')">
-                    <a href="{{ route('user.index') }}" class="menu-link">
-                        <div data-i18n="User">Pengguna</div>
-                    </a>
-                </li>
-                <li class="menu-item @yield('customer_active')">
-                    <a href="{{ route('customer.index') }}" class="menu-link">
-                        <div data-i18n="Customer">Customer</div>
-                    </a>
-                </li>
-                <li class="menu-item @yield('product_category_active')">
-                    <a href="{{ route('product_category.index') }}" class="menu-link">
-                        <div data-i18n="product_category">Kategori Produk</div>
-                    </a>
-                </li>
-                <li class="menu-item @yield('packaging_active')">
-                    <a href="{{ route('packaging.index') }}" class="menu-link">
-                        <div data-i18n="packaging">Packaging</div>
-                    </a>
-                </li>
-                <li class="menu-item @yield('product_active')">
-                    <a href="{{ route('product.index') }}" class="menu-link">
-                        <div data-i18n="product">Produk</div>
-                    </a>
-                </li>
-                <li class="menu-item @yield('termin_active')">
-                    <a href="{{ route('termin.index') }}" class="menu-link">
-                        <div data-i18n="termin">Termin</div>
-                    </a>
-                </li>
+
+                {{-- USER (Owner only) --}}
+                @if ($role === 'Owner')
+                    <li class="menu-item @yield('user_active')">
+                        <a href="{{ route('user.index') }}" class="menu-link">
+                            <div>Pengguna</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- CUSTOMER (Owner & Admin) --}}
+                @if (in_array($role, ['Owner', 'Admin']))
+                    <li class="menu-item @yield('customer_active')">
+                        <a href="{{ route('customer.index') }}" class="menu-link">
+                            <div>Customer</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- PRODUCT CATEGORY (Owner & Admin) --}}
+                @if (in_array($role, ['Owner', 'Admin']))
+                    <li class="menu-item @yield('product_category_active')">
+                        <a href="{{ route('product_category.index') }}" class="menu-link">
+                            <div>Kategori Produk</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- PACKAGING (Owner & Admin) --}}
+                @if (in_array($role, ['Owner', 'Admin']))
+                    <li class="menu-item @yield('packaging_active')">
+                        <a href="{{ route('packaging.index') }}" class="menu-link">
+                            <div>Packaging</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- PRODUCT (Owner & Admin) --}}
+                @if (in_array($role, ['Owner', 'Admin']))
+                    <li class="menu-item @yield('product_active')">
+                        <a href="{{ route('product.index') }}" class="menu-link">
+                            <div>Produk</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- TERMIN (Owner only) --}}
+                @if ($role === 'Owner')
+                    <li class="menu-item @yield('termin_active')">
+                        <a href="{{ route('termin.index') }}" class="menu-link">
+                            <div>Termin</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
+
     </ul>
 </aside>

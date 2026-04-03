@@ -53,7 +53,7 @@
             icon: 'error',
             title: 'Failed',
             text: "{{ session('error') }}",
-            timer: 6000,
+            timer: 2000,
             showConfirmButton: false
         });
     @endif
