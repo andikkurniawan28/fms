@@ -3,7 +3,7 @@
     <div class="mb-2 mb-md-0">
       ©2026
       , made with ❤️ by
-      <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">Solusi Bisnis Malang</a>
+      <a href="https://wa.me/62881012827638" target="_blank" class="footer-link fw-bolder">Solusi Bisnis Malang</a>
     </div>
   </div>
 </footer>
