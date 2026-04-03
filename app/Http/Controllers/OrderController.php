@@ -90,7 +90,7 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            $code = 'ORD-' . date('YmdHis');
+            $code = 'ORD' . date('YmdHis');
 
             $subtotal = 0;
 

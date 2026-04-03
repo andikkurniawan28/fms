@@ -93,7 +93,7 @@ class PaymentController extends Controller
             }
 
             Payment::create([
-                'code' => 'PAY-' . date('YmdHis'),
+                'code' => 'PAY' . date('YmdHis'),
                 'date' => $request->date,
                 'customer_id' => $order->customer_id,
                 'user_id' => auth()->id(),
