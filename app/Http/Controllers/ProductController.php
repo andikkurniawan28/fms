@@ -84,6 +84,7 @@ class ProductController extends Controller
                 'packaging_id' => $packaging->id,
                 'name' => $request->name,
                 'price' => $request->$priceField,
+                'minimum_order' => $request->minimum_order,
                 'base_price' => 0,
                 'cost' => 0,
             ]);

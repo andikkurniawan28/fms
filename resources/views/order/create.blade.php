@@ -135,7 +135,7 @@
                         <option value="">-- Pilih --</option>
                         ${products.map(p =>
                             `<option value="${p.id}" data-price="${p.price}">
-                                    ${p.name} (${p.packaging?.name ?? '-'})
+                                    ${p.product_category?.name ?? '-'} - ${p.name} (${p.packaging?.name ?? '-'})
                                 </option>`
                         ).join('')}
                     </select>

@@ -96,7 +96,7 @@ class PaymentController extends Controller
                 'code' => 'PAY-' . date('YmdHis'),
                 'date' => $request->date,
                 'customer_id' => $order->customer_id,
-                'user_id' => 1,
+                'user_id' => auth()->id(),
                 'order_id' => $order->id,
                 'total' => $total,
             ]);
@@ -106,7 +106,7 @@ class PaymentController extends Controller
 
             $status = $newPaid == 0
                 ? 'Belum Bayar'
-                : ($left > 0 ? 'Belum Lunas' : 'Lunas');
+                : ($left > 0 ? 'Sudah DP' : 'Lunas');
 
             $order->update([
                 'paid' => $newPaid,
@@ -161,7 +161,7 @@ class PaymentController extends Controller
             $payment->update([
                 'date' => $request->date,
                 'total' => $newTotal,
-                'user_id' => 1,
+                'user_id' => auth()->id(),
             ]);
 
             // hitung ulang
@@ -170,7 +170,7 @@ class PaymentController extends Controller
 
             $order->status = $order->paid == 0
                 ? 'Belum Bayar'
-                : ($order->left > 0 ? 'Belum Lunas' : 'Lunas');
+                : ($order->left > 0 ? 'Sudah DP' : 'Lunas');
 
             $order->save();
 
@@ -196,7 +196,7 @@ class PaymentController extends Controller
 
             $order->status = $order->paid == 0
                 ? 'Belum Bayar'
-                : ($order->left > 0 ? 'Belum Lunas' : 'Lunas');
+                : ($order->left > 0 ? 'Sudah DP' : 'Lunas');
 
             $order->save();
 

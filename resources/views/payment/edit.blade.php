@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="container-xxl container-p-y">
-    <h4 class="mb-4"><strong>Edit Payment</strong></h4>
+    <h4 class="mb-4"><strong>Edit pelunasan</strong></h4>
 
     <div class="card">
         <div class="card-body">

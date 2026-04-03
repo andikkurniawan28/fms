@@ -9,7 +9,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('product.store') }}" method="POST">
+            <form action="{{ route('product.store') }}" method="POST" id="form-product">
                 @csrf
 
                 {{-- Kategori --}}
@@ -18,7 +18,7 @@
                     <select name="product_category_id" class="form-select select2" required>
                         <option value="">-- Pilih Kategori --</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('product_category_id') == $category->id ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}">
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -28,35 +28,60 @@
                 {{-- Nama --}}
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+
+                {{-- Minimum Order --}}
+                <div class="mb-3">
+                    <label class="form-label">Minimum Order</label>
+                    <input type="number" name="minimum_order" class="form-control" value="1" required>
                 </div>
 
                 {{-- Harga --}}
                 @foreach($packagings as $p)
                 <div class="mb-3">
                     <label class="form-label">Harga Jual (Packaging {{ $p->name }})</label>
-                    <input type="number" step="0.01" name="price_{{ $p->id }}" class="form-control" value="{{ old('price') }}" required>
+                    <input type="text" name="price_{{ $p->id }}" class="form-control rupiah">
                 </div>
                 @endforeach
-
-                {{-- Base Price --}}
-                {{-- <div class="mb-3">
-                    <label class="form-label">Base Price</label>
-                    <input type="number" step="0.01" name="base_price" class="form-control" value="{{ old('base_price') }}">
-                </div> --}}
-
-                {{-- Cost --}}
-                {{-- <div class="mb-3">
-                    <label class="form-label">Cost</label>
-                    <input type="number" step="0.01" name="cost" class="form-control" value="{{ old('cost') }}">
-                </div> --}}
 
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('product.index') }}" class="btn btn-secondary me-2">Batal</a>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+$(function(){
+
+    function formatRupiah(angka) {
+        return new Intl.NumberFormat('id-ID').format(angka || 0);
+    }
+
+    function parseRupiah(str) {
+        return (str || '').replace(/\./g, '');
+    }
+
+    // format saat ketik
+    $(document).on('keyup', '.rupiah', function(){
+        let val = parseRupiah($(this).val());
+        $(this).val(formatRupiah(val));
+    });
+
+    // bersihin sebelum submit
+    $('#form-product').on('submit', function(){
+        $('.rupiah').each(function(){
+            let clean = parseRupiah($(this).val());
+            $(this).val(clean);
+        });
+    });
+
+});
+</script>
 @endsection

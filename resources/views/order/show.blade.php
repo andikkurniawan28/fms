@@ -55,6 +55,7 @@
                         <tr>
                             <td>{{ $i+1 }}</td>
                             <td>
+                                {{ $item->product->productCategory->name }} -
                                 {{ $item->product->name }}
                                 <br>
                                 <small class="text-muted">

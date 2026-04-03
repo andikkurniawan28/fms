@@ -19,11 +19,11 @@
                 <table id="productTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center">
                     <thead>
                         <tr>
-                            <th>Nama</th>
                             <th>Kategori</th>
+                            <th>Nama</th>
                             <th>Packaging</th>
                             <th>Harga</th>
-                            <th>Biaya</th>
+                            {{-- <th>Biaya</th> --}}
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -36,6 +36,9 @@
 
 @section('script')
 <script>
+    function formatRupiah(angka) {
+        return new Intl.NumberFormat('id-ID').format(angka || 0);
+    }
     $(function() {
         $('#productTable').DataTable({
             processing: true,
@@ -43,11 +46,11 @@
             ajax: "{{ route('product.index') }}",
             order: [[0, 'asc']],
             columns: [
-                { data: 'name', name: 'name' },
                 { data: 'category', name: 'category' },
+                { data: 'name', name: 'name' },
                 { data: 'packaging', name: 'packaging' },
-                { data: 'price', name: 'price' },
-                { data: 'cost', name: 'cost' },
+                { data: 'price', name: 'price', render: function(data) { return formatRupiah(data); } },
+                // { data: 'cost', name: 'cost', render: function(data) { return formatRupiah(data); } },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

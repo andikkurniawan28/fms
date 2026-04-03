@@ -114,7 +114,7 @@ class OrderController extends Controller
                 'code' => $code,
                 'date' => $request->date,
                 'customer_id' => $request->customer_id,
-                'user_id' => 1,
+                'user_id' => auth()->id(),
                 'termin_id' => $request->termin_id,
                 'subtotal' => $subtotal,
                 'discount' => $discount,
@@ -123,7 +123,7 @@ class OrderController extends Controller
                 'grand_total' => $grandTotal,
                 'paid' => $paid,
                 'left' => $left,
-                'status' => $paid == 0 ? 'Belum Bayar' : ($left > 0 ? 'Belum Lunas' : 'Lunas'),
+                'status' => $paid == 0 ? 'Belum Bayar' : ($left > 0 ? 'Sudah DP' : 'Lunas'),
             ]);
 
             // insert items
@@ -146,7 +146,7 @@ class OrderController extends Controller
                     'code' => 'PAY-' . date('YmdHis'),
                     'date' => $request->date,
                     'customer_id' => $request->customer_id,
-                    'user_id' => 1,
+                    'user_id' => auth()->id(),
                     'order_id' => $order->id,
                     'total' => $paid,
                 ]);
@@ -217,13 +217,13 @@ class OrderController extends Controller
             // 🧠 status sama seperti store
             $status = $paid == 0
                 ? 'Belum Bayar'
-                : ($left > 0 ? 'Belum Lunas' : 'Lunas');
+                : ($left > 0 ? 'Sudah DP' : 'Lunas');
 
             // ✅ update order
             $order->update([
                 'date' => $request->date,
                 'customer_id' => $request->customer_id,
-                'user_id' => 1,
+                'user_id' => auth()->id(),
                 'termin_id' => $request->termin_id,
                 'subtotal' => $subtotal,
                 'discount' => $discount,
@@ -260,7 +260,7 @@ class OrderController extends Controller
                     $existingPayment->update([
                         'date' => $request->date,
                         'customer_id' => $request->customer_id,
-                        'user_id' => 1,
+                        'user_id' => auth()->id(),
                         'total' => $paid,
                     ]);
                 } else {
@@ -268,7 +268,7 @@ class OrderController extends Controller
                         'code' => 'PAY-' . date('YmdHis'),
                         'date' => $request->date,
                         'customer_id' => $request->customer_id,
-                        'user_id' => 1,
+                        'user_id' => auth()->id(),
                         'order_id' => $order->id,
                         'total' => $paid,
                     ]);

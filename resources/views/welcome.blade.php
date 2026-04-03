@@ -137,18 +137,18 @@ $(function () {
         let data = res || {};
 
         $('#hero-text').html(`
-            Hari ini ada <span class="fw-bold">${data.today_order ?? 0}</span> transaksi
-            dengan total omzet <span class="fw-bold">Rp ${rupiah(data.today_revenue)}</span>
+            Hari ini ada <span class="fw-bold">${data.today.order ?? 0}</span> transaksi
+            dengan total omzet <span class="fw-bold">Rp ${rupiah(data.today.revenue)}</span>
         `);
 
-        $('#omzet').text('Rp ' + rupiah(data.month_revenue));
+        $('#omzet').text('Rp ' + rupiah(data.monthly_revenue));
         $('#growth').html(`<i class="bx bx-up-arrow-alt"></i> ${data.growth ?? 0}%`);
 
         $('#total_order').text(data.total_order ?? 0);
-        $('#today_order').html(`<i class="bx bx-up-arrow-alt"></i> +${data.today_order ?? 0} hari ini`);
+        $('#today_order').html(`<i class="bx bx-up-arrow-alt"></i> +${data.today.order ?? 0} hari ini`);
 
-        $('#piutang').text('Rp ' + rupiah(data.piutang));
-        $('#piutang_count').text((data.piutang_count ?? 0) + ' invoice belum lunas');
+        $('#piutang').text('Rp ' + rupiah(data.receivable));
+        $('#piutang_count').text((data.unpaid_count ?? 0) + ' invoice belum lunas');
 
         $('#payment').text('Rp ' + rupiah(data.payment));
         $('#payment_growth').text(data.payment_growth ?? '-');

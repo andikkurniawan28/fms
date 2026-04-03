@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('product_category_id')->constrained();
             $table->foreignId('packaging_id')->constrained();
             $table->string('name');
+            $table->integer('minimum_order')->default(1);
             $table->double('price');
             $table->double('base_price')->default(0);
             $table->double('cost')->default(0);
