@@ -55,6 +55,15 @@
             </ul>
         </li>
 
+        <li class="menu-item @yield('laporan_active')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-file"></i>
+                <div>Laporan</div>
+            </a>
+            <ul class="menu-sub">
+            </ul>
+        </li>
+
         <!-- Master -->
         <li class="menu-item @yield('master_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
