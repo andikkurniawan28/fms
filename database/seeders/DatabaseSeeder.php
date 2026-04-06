@@ -106,6 +106,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 6, 'name' => 'Doublewall'],
             ['id' => 7, 'name' => 'Hardbox'],
             ['id' => 8, 'name' => 'Rustic Box'],
+            ['id' => 9, 'name' => 'Tile'],
         ]);
 
         Product::insert([
@@ -270,6 +271,14 @@ class DatabaseSeeder extends Seeder
             ['price' => 45500, 'name' => 'Poci Tumpuk', 'product_category_id' => 13, 'packaging_id' => 1, 'minimum_order' => 1],
             ['price' => 72500, 'name' => 'Poci Yasmin', 'product_category_id' => 13, 'packaging_id' => 1, 'minimum_order' => 1],
             ['price' => 24500, 'name' => 'Namo + Sendok', 'product_category_id' => 13, 'packaging_id' => 1, 'minimum_order' => 1],
+
+            ['price' => 7500, 'name' => 'Jago / Pengantin', 'product_category_id' => 14, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['price' => 7500, 'name' => 'Daun', 'product_category_id' => 14, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['price' => 9000, 'name' => 'Jago Bening', 'product_category_id' => 14, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['price' => 6000, 'name' => 'Apel & Bola', 'product_category_id' => 14, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['price' => 12000, 'name' => 'Two Tone', 'product_category_id' => 14, 'packaging_id' => 5, 'minimum_order' => 1],
+            ['price' => 14000, 'name' => 'Two Tone', 'product_category_id' => 14, 'packaging_id' => 9, 'minimum_order' => 1],
+            ['price' => 14500, 'name' => 'Two Tone', 'product_category_id' => 14, 'packaging_id' => 3, 'minimum_order' => 1],
         ]);
 
     }
