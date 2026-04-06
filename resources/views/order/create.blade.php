@@ -41,6 +41,7 @@
                     </div>
 
                     {{-- Items --}}
+                    <div class="table-responsive">
                     <table class="table table-bordered" id="items-table">
                         <thead>
                             <tr>
@@ -53,6 +54,7 @@
                         </thead>
                         <tbody></tbody>
                     </table>
+                    </div>
 
                     <button type="button" class="btn btn-primary mb-3 mt-3" id="add-row">
                         + Tambah Item
