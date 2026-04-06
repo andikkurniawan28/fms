@@ -23,6 +23,7 @@
                             <th>Nama</th>
                             <th>Packaging</th>
                             <th>Harga</th>
+                            <th>Min Order</th>
                             {{-- <th>Biaya</th> --}}
                             <th>Aksi</th>
                         </tr>
@@ -51,6 +52,7 @@
                 { data: 'packaging', name: 'packaging' },
                 { data: 'price', name: 'price', render: function(data) { return formatRupiah(data); } },
                 // { data: 'cost', name: 'cost', render: function(data) { return formatRupiah(data); } },
+                { data: 'minimum_order', name: 'minimum_order' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

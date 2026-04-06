@@ -37,16 +37,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         ProductCategory::insert([
-            ['name' => 'Tempat Tissue'],
-            ['name' => 'Payung'],
-            ['name' => 'Jam Dinding'],
-            ['name' => 'Jam + Speaker Bluetooth'],
-            ['name' => 'Cermin'],
-            ['name' => 'Ganci'],
-            ['name' => 'Slipper'],
-            ['name' => 'Slayer'],
-            ['name' => 'Handuk'],
-            ['name' => 'Tanaman Succulent'],
+            ['name' => 'Tempat Tissue'],            // 1
+            ['name' => 'Payung'],                   // 2
+            ['name' => 'Jam Dinding'],              // 3
+            ['name' => 'Jam + Speaker Bluetooth'],  // 4
+            ['name' => 'Cermin'],                   // 5
+            ['name' => 'Ganci'],                    // 6
+            ['name' => 'Slipper'],                  // 7
+            ['name' => 'Slayer'],                   // 8
+            ['name' => 'Handuk'],                   // 9
+            ['name' => 'Tanaman Succulent'],        // 10
             ['name' => 'Madu Akasia'],
             ['name' => 'Handsanitizer'],
             ['name' => 'Hampers Raudhah Series'],
@@ -109,6 +109,30 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Kayu 300ply', 'product_category_id' => 1, 'packaging_id' => 11, 'minimum_order' => 1, 'price' => 40000],
             ['name' => 'Kayu Kecil', 'product_category_id' => 1, 'packaging_id' => 1, 'minimum_order' => 1, 'price' => 12000],
             ['name' => 'Kayu Full Stiker', 'product_category_id' => 1, 'packaging_id' => 1, 'minimum_order' => 1, 'price' => 18000],
+            ['name' => 'Polos Lipat 3', 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1, 'price' => 35000],
+            ['name' => 'Lipat 3 Motif 3D', 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1, 'price' => 26000],
+            ['name' => 'Payung UV', 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1, 'price' => 26000],
+            ['name' => 'Payung UV Otomatis', 'price' => 40000, 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Payung Golf A', 'price' => 75000, 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Payung Golf B', 'price' => 60000, 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Mini Capsule', 'price' => 67500, 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Payung Tumbler', 'price' => 38500, 'product_category_id' => 2, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Dinding 1 D24cm', 'price' => 37500, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Dinding 2 D30cm', 'price' => 39000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Dinding 3 D31cm', 'price' => 75000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jumbo Putih D35cm', 'price' => 90000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jumbo Hitam D32cm', 'price' => 55000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jumbo Ring Silver', 'price' => 95000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Weker', 'price' => 35000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Kayu Kotak Tanpa Kaca 128X12cm', 'price' => 18000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Kayu Tinggi', 'price' => 22500, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Kayu Tinggi Tanpa Kaca', 'price' => 18000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Kayu Kotak', 'price' => 17500, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Jam Kayu Pencil Case', 'price' => 25000, 'product_category_id' => 3, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Speaker S2 + Box Custom', 'price' => 200000, 'product_category_id' => 4, 'packaging_id' => 1, 'minimum_order' => 25],
+            ['name' => 'Speaker A5', 'price' => 125000, 'product_category_id' => 4, 'packaging_id' => 1, 'minimum_order' => 25],
+            ['name' => 'Speaker Goojodoq', 'price' => 85000, 'product_category_id' => 4, 'packaging_id' => 1, 'minimum_order' => 1],
+            ['name' => 'Powerbank 10.000mAH', 'price' => 90000, 'product_category_id' => 4, 'packaging_id' => 1, 'minimum_order' => 1],
         ]);
 
     }

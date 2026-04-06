@@ -154,7 +154,7 @@
                 <select name="items[${index}][product_id]" class="form-select select2 product">
                     <option value="">-- Pilih --</option>
                     ${products.map(p =>
-                        `<option value="${p.id}" data-price="${p.price}"
+                        `<option value="${p.id}" data-price="${p.price}" data-minimum_order="${p.minimum_order}"
                                 ${item && item.product_id == p.id ? 'selected' : ''}>
                                 ${p.name} (${p.packaging?.name ?? '-'})
                             </option>`
@@ -199,12 +199,30 @@ calculateTotal();
                 addRow();
             });
 
-            // pilih produk
             $(document).on('change', '.product', function() {
-                let price = $(this).find(':selected').data('price');
+                let selected = $(this).find(':selected');
+                let price = selected.data('price');
+                let minimumOrder = selected.data('minimum_order');
+
                 let row = $(this).closest('tr');
 
+                // set price
                 row.find('.price').val(formatRupiah(price)).trigger('keyup');
+
+                // set qty ke minimum order (atau kelipatan terdekat)
+                let qtyInput = row.find('.qty');
+                qtyInput.attr('min', minimumOrder);
+                let currentQty = parseInt(qtyInput.val()) || 0;
+
+                if (currentQty < minimumOrder) {
+                    qtyInput.val(minimumOrder);
+                } else {
+                    // pembulatan ke kelipatan minimum_order
+                    let adjustedQty = Math.ceil(currentQty / minimumOrder) * minimumOrder;
+                    qtyInput.val(adjustedQty);
+                }
+
+                qtyInput.trigger('keyup');
             });
 
             // format input
