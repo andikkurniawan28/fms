@@ -52,6 +52,15 @@
                     </li>
                 @endif
 
+                {{-- PRODUCTION (Owner & Admin) --}}
+                @if (in_array($role, ['Owner', 'Admin']))
+                    <li class="menu-item @yield('production_active')">
+                        <a href="{{ route('production.index') }}" class="menu-link">
+                            <div>SPK</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
 
@@ -90,32 +99,41 @@
                     </li>
                 @endif
 
+                {{-- CUSTOMER (Owner) --}}
+                @if (in_array($role, ['Owner']))
+                    <li class="menu-item @yield('account_active')">
+                        <a href="{{ route('account.index') }}" class="menu-link">
+                            <div>Akun</div>
+                        </a>
+                    </li>
+                @endif
+
                 {{-- PRODUCT CATEGORY (Owner & Admin) --}}
-                @if (in_array($role, ['Owner', 'Admin']))
+                {{-- @if (in_array($role, ['Owner', 'Admin']))
                     <li class="menu-item @yield('product_category_active')">
                         <a href="{{ route('product_category.index') }}" class="menu-link">
                             <div>Kategori Produk</div>
                         </a>
                     </li>
-                @endif
+                @endif --}}
 
                 {{-- PACKAGING (Owner & Admin) --}}
-                @if (in_array($role, ['Owner', 'Admin']))
+                {{-- @if (in_array($role, ['Owner', 'Admin']))
                     <li class="menu-item @yield('packaging_active')">
                         <a href="{{ route('packaging.index') }}" class="menu-link">
                             <div>Packaging</div>
                         </a>
                     </li>
-                @endif
+                @endif --}}
 
                 {{-- PRODUCT (Owner & Admin) --}}
-                @if (in_array($role, ['Owner', 'Admin']))
+                {{-- @if (in_array($role, ['Owner', 'Admin']))
                     <li class="menu-item @yield('product_active')">
                         <a href="{{ route('product.index') }}" class="menu-link">
                             <div>Produk</div>
                         </a>
                     </li>
-                @endif
+                @endif --}}
 
                 {{-- TERMIN (Owner only) --}}
                 @if ($role === 'Owner')

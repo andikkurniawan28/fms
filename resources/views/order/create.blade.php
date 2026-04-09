@@ -117,7 +117,6 @@
     <script>
         $(function() {
 
-            let products = @json($products);
             let index = 0;
 
             function formatRupiah(angka) {
@@ -128,19 +127,22 @@
                 return parseFloat((str || '').replace(/\./g, '')) || 0;
             }
 
+
+                    // <select name="items[${index}][product_id]" class="form-select select2 product">
+                    //     <option value="">-- Pilih --</option>
+                    //     ${products.map(p =>
+                    //         `<option value="${p.id}" data-price="${p.price}" data-minimum_order="${p.minimum_order}">
+                    //                 ${p.product_category?.name ?? '-'} - ${p.name} (${p.packaging?.name ?? '-'})
+                    //             </option>`
+                    //     ).join('')}
+                    // </select>
+
             // tambah row
             $('#add-row').click(function() {
                 let row = `
             <tr>
                 <td>
-                    <select name="items[${index}][product_id]" class="form-select select2 product">
-                        <option value="">-- Pilih --</option>
-                        ${products.map(p =>
-                            `<option value="${p.id}" data-price="${p.price}" data-minimum_order="${p.minimum_order}">
-                                    ${p.product_category?.name ?? '-'} - ${p.name} (${p.packaging?.name ?? '-'})
-                                </option>`
-                        ).join('')}
-                    </select>
+                    <textarea name="items[${index}][product_id]" class="form-control"></textarea>
                 </td>
                 <td>
                     <input type="number" name="items[${index}][qty]" class="form-control qty" value="1">

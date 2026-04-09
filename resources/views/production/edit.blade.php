@@ -1,45 +1,50 @@
 @extends('template.master')
 
 @section('transaksi_active', 'active')
-@section('order_active', 'active')
+@section('production_active', 'active')
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="mb-4"><strong>Edit order</strong></h4>
+        <h4 class="mb-4"><strong>Edit SPK</strong></h4>
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('order.update', $order->id) }}" method="POST">
+                <form action="{{ route('production.update', $production->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
                     {{-- Header --}}
                     <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label>Tanggal</label>
-                            <input type="date" name="date" value="{{ $order->date }}" class="form-control" required>
+                        <div class="col-md-3">
+                            <label>Tanggal Terbit</label>
+                            <input type="date" name="date" value="{{ $production->date }}" class="form-control" required>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label>Tanggal Acara</label>
+                            <input type="date" name="due_date" value="{{ $production->due_date }}" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-3">
                             <label>Customer</label>
                             <select name="customer_id" class="form-select select2" required>
                                 <option value="">-- Pilih --</option>
                                 @foreach ($customers as $c)
                                     <option value="{{ $c->id }}"
-                                        {{ $order->customer_id == $c->id ? 'selected' : '' }}>
+                                        {{ $production->customer_id == $c->id ? 'selected' : '' }}>
                                         {{ $c->name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="col-md-4">
-                            <label>Termin</label>
-                            <select name="termin_id" class="form-select select2" required>
+                        <div class="col-md-3">
+                            <label>Order</label>
+                            <select name="order_id" class="form-select select2" required>
                                 <option value="">-- Pilih --</option>
-                                @foreach ($terminals as $t)
-                                    <option value="{{ $t->id }}" {{ $order->termin_id == $t->id ? 'selected' : '' }}>
-                                        {{ $t->name }}
+                                @foreach ($orders as $t)
+                                    <option value="{{ $t->id }}" {{ $production->order_id == $t->id ? 'selected' : '' }}>
+                                        {{ $t->code }} - {{ $t->customer->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -48,10 +53,11 @@
 
                     {{-- Items --}}
                     <div class="table-responsive">
-                    <table class="table table-bordered" id="items-table">
+                    <table class="table table-bproductioned" id="items-table">
                         <thead>
                             <tr>
                                 <th>Produk</th>
+                                <th>Spesifikasi</th>
                                 <th width="120">Qty</th>
                                 <th width="180">Harga</th>
                                 <th width="180">Amount</th>
@@ -75,22 +81,22 @@
                                 <input type="text" name="subtotal" id="subtotal" class="form-control" readonly>
                             </div>
 
-                            <div class="mb-2">
+                            {{-- <div class="mb-2">
                                 <label>Diskon</label>
                                 <input type="text" name="discount" id="discount" class="form-control"
-                                    value="{{ number_format($order->discount, 0, ',', '.') }}">
+                                    value="{{ number_format($production->discount, 0, ',', '.') }}">
                             </div>
 
                             <div class="mb-2">
                                 <label>Biaya Lain-lain</label>
                                 <input type="text" name="expenses" id="expenses" class="form-control"
-                                    value="{{ number_format($order->expenses, 0, ',', '.') }}">
+                                    value="{{ number_format($production->expenses, 0, ',', '.') }}">
                             </div>
 
                             <div class="mb-2">
                                 <label>Pajak</label>
                                 <input type="text" name="taxes" id="taxes" class="form-control"
-                                    value="{{ number_format($order->taxes, 0, ',', '.') }}">
+                                    value="{{ number_format($production->taxes, 0, ',', '.') }}">
                             </div>
 
                             <div class="mb-2">
@@ -101,19 +107,19 @@
                             <div class="mb-2">
                                 <label>DP / Dibayar</label>
                                 <input type="text" name="paid" id="paid" class="form-control"
-                                    value="{{ number_format($order->paid, 0, ',', '.') }}">
+                                    value="{{ number_format($production->paid, 0, ',', '.') }}">
                             </div>
 
                             <div class="mb-2">
                                 <label>Sisa</label>
                                 <input type="text" name="left" id="left" class="form-control" readonly>
-                            </div>
+                            </div> --}}
 
                         </div>
                     </div>
 
                     <div class="text-end mt-3">
-                        <a href="{{ route('order.index') }}" class="btn btn-secondary">Batal</a>
+                        <a href="{{ route('production.index') }}" class="btn btn-secondary">Batal</a>
                         <button class="btn btn-success">Update</button>
                     </div>
 
@@ -127,7 +133,7 @@
     <script>
         $(function() {
 
-            let items = @json($order->items);
+            let items = @json($production->items);
             let index = 0;
 
             function calculateRow(row) {
@@ -150,7 +156,7 @@
                 // <select name="items[${index}][product_id]" class="form-select select2 product">
                 //     <option value="">-- Pilih --</option>
                 //     ${products.map(p =>
-                //         `<option value="${p.id}" data-price="${p.price}" data-minimum_order="${p.minimum_order}"
+                //         `<option value="${p.id}" data-price="${p.price}" data-minimum_production="${p.minimum_production}"
                 //                 ${item && item.product_id == p.id ? 'selected' : ''}>
                 //                 ${p.name} (${p.packaging?.name ?? '-'})
                 //             </option>`
@@ -163,6 +169,9 @@
         <tr>
             <td>
                 <textarea name="items[${index}][product_id]" class="form-control">${item ? item.product : ''}</textarea>
+            </td>
+            <td>
+                <textarea name="items[${index}][description]" class="form-control">${item ? item.description : ''}</textarea>
             </td>
             <td>
                 <input type="number" name="items[${index}][qty]" class="form-control qty"
@@ -203,31 +212,31 @@ calculateTotal();
             });
 
             // pilih produk → isi harga + set qty minimum
-            $(document).on('change', '.product', function() {
-                let selected = $(this).find(':selected');
-                let price = selected.data('price');
-                let minimumOrder = selected.data('minimum_order');
+            // $(document).on('change', '.product', function() {
+            //     let selected = $(this).find(':selected');
+            //     let price = selected.data('price');
+            //     let minimumOrder = selected.data('minimum_production');
 
-                let row = $(this).closest('tr');
+            //     let row = $(this).closest('tr');
 
-                // set price
-                row.find('.price').val(formatRupiah(price)).trigger('keyup');
+            //     // set price
+            //     row.find('.price').val(formatRupiah(price)).trigger('keyup');
 
-                // set qty ke minimum order (atau kelipatan terdekat)
-                let qtyInput = row.find('.qty');
-                qtyInput.attr('min', minimumOrder);
-                let currentQty = parseInt(qtyInput.val()) || 0;
+            //     // set qty ke minimum production (atau kelipatan terdekat)
+            //     let qtyInput = row.find('.qty');
+            //     qtyInput.attr('min', minimumOrder);
+            //     let currentQty = parseInt(qtyInput.val()) || 0;
 
-                if (currentQty < minimumOrder) {
-                    qtyInput.val(minimumOrder);
-                } else {
-                    // pembulatan ke kelipatan minimum_order
-                    let adjustedQty = Math.ceil(currentQty / minimumOrder) * minimumOrder;
-                    qtyInput.val(adjustedQty);
-                }
+            //     if (currentQty < minimumOrder) {
+            //         qtyInput.val(minimumOrder);
+            //     } else {
+            //         // pembulatan ke kelipatan minimum_production
+            //         let adjustedQty = Math.ceil(currentQty / minimumOrder) * minimumOrder;
+            //         qtyInput.val(adjustedQty);
+            //     }
 
-                qtyInput.trigger('keyup');
-            });
+            //     qtyInput.trigger('keyup');
+            // });
 
             // format input
             $(document).on('keyup', '.price, #discount, #expenses, #taxes, #paid', function() {
@@ -264,21 +273,21 @@ calculateTotal();
 
                 $('#subtotal').val(formatRupiah(subtotal));
 
-                let discount = parseRupiah($('#discount').val());
-                let expenses = parseRupiah($('#expenses').val());
-                let taxes = parseRupiah($('#taxes').val());
+                // let discount = parseRupiah($('#discount').val());
+                // let expenses = parseRupiah($('#expenses').val());
+                // let taxes = parseRupiah($('#taxes').val());
 
-                let grandTotal = subtotal - discount + expenses + taxes;
+                // let grandTotal = subtotal - discount + expenses + taxes;
 
-                $('#grand_total').val(formatRupiah(grandTotal));
+                // $('#grand_total').val(formatRupiah(grandTotal));
 
-                let paid = parseRupiah($('#paid').val());
-                let left = grandTotal - paid;
+                // let paid = parseRupiah($('#paid').val());
+                // let left = grandTotal - paid;
 
-                $('#left').val(formatRupiah(left));
+                // $('#left').val(formatRupiah(left));
             }
 
-            $('#discount, #expenses, #taxes, #paid').on('keyup change', calculateTotal);
+            // $('#discount, #expenses, #taxes, #paid').on('keyup change', calculateTotal);
 
         });
     </script>

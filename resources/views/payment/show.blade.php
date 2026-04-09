@@ -1,4 +1,4 @@
-@extends('template.master')
+@extends('template.invoice')
 
 @section('transaksi_active', 'active')
 @section('payment_active', 'active')

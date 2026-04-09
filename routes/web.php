@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApiHomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
@@ -7,8 +8,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentRecordPerInvoiceController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\TerminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +68,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('order.destroy')
         ->middleware('role:Owner');
 
+    Route::get('order/payment_record_per_invoice/{id}', PaymentRecordPerInvoiceController::class)
+        ->name('order.payment_record_per_invoice')
+        ->middleware('role:Owner,Admin');
+
 
     /**
      * =========================
@@ -97,6 +104,40 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('payment/{payment}', [PaymentController::class, 'destroy'])
         ->name('payment.destroy')
+        ->middleware('role:Owner');
+
+
+    /**
+     * =========================
+     * PRODUCTION
+     * =========================
+     */
+    Route::get('production', [ProductionController::class, 'index'])
+        ->name('production.index')
+        ->middleware('role:Owner,Admin');
+
+    Route::get('production/create', [ProductionController::class, 'create'])
+        ->name('production.create')
+        ->middleware('role:Owner,Admin');
+
+    Route::post('production', [ProductionController::class, 'store'])
+        ->name('production.store')
+        ->middleware('role:Owner,Admin');
+
+    Route::get('production/{production}', [ProductionController::class, 'show'])
+        ->name('production.show')
+        ->middleware('role:Owner,Admin');
+
+    Route::get('production/{production}/edit', [ProductionController::class, 'edit'])
+        ->name('production.edit')
+        ->middleware('role:Owner');
+
+    Route::put('production/{production}', [ProductionController::class, 'update'])
+        ->name('production.update')
+        ->middleware('role:Owner');
+
+    Route::delete('production/{production}', [ProductionController::class, 'destroy'])
+        ->name('production.destroy')
         ->middleware('role:Owner');
 
 
@@ -277,6 +318,36 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('termin/{termin}', [TerminController::class, 'destroy'])
         ->name('termin.destroy')
+        ->middleware('role:Owner');
+
+
+    /**
+     * =========================
+     * ACCOUNT (OWNER ONLY)
+     * =========================
+     */
+    Route::get('account', [AccountController::class, 'index'])
+        ->name('account.index')
+        ->middleware('role:Owner');
+
+    Route::get('account/create', [AccountController::class, 'create'])
+        ->name('account.create')
+        ->middleware('role:Owner');
+
+    Route::post('account', [AccountController::class, 'store'])
+        ->name('account.store')
+        ->middleware('role:Owner');
+
+    Route::get('account/{account}/edit', [AccountController::class, 'edit'])
+        ->name('account.edit')
+        ->middleware('role:Owner');
+
+    Route::put('account/{account}', [AccountController::class, 'update'])
+        ->name('account.update')
+        ->middleware('role:Owner');
+
+    Route::delete('account/{account}', [AccountController::class, 'destroy'])
+        ->name('account.destroy')
         ->middleware('role:Owner');
 
 });

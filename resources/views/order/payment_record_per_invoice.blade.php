@@ -13,7 +13,7 @@
             <div class="d-flex justify-content-between mb-4">
                 <div>
                     <h3 class="mb-1"><strong>Fathania Souvenir</strong></h3>
-                    <p class="mb-0">Invoice Penjualan</p>
+                    <p class="mb-0">Rekap Pelunasan</p>
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $order->code }}</h5>
@@ -29,11 +29,11 @@
             {{-- CUSTOMER --}}
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h6><strong>Kepada:</strong></h6>
+                    <h6><strong>Customer:</strong></h6>
                     <p class="mb-0">{{ $order->customer->name }}</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <h6><strong>Dibuat oleh:</strong></h6>
+                    <h6><strong>Admin:</strong></h6>
                     <p class="mb-0">{{ $order->user->name }}</p>
                 </div>
             </div>
@@ -44,16 +44,16 @@
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
-                            <th>Produk</th>
-                            <th>Qty</th>
-                            <th>Harga</th>
+                            <th>Tanggal</th>
+                            <th>Kode</th>
+                            <th>Diterima oleh</th>
                             <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($order->items as $i => $item)
+                        @foreach($order->payment as $item)
                         <tr>
-                            <td>{{ $i+1 }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             {{-- <td>
                                 {{ $item->product->productCategory->name }} -
                                 {{ $item->product->name }}
@@ -62,10 +62,10 @@
                                     {{ $item->product->packaging->name ?? '-' }}
                                 </small>
                             </td> --}}
-                            <td>{{ $item->product }}</td>
-                            <td>{{ $item->qty }}</td>
-                            <td>{{ number_format($item->price,0,',','.') }}</td>
-                            <td>{{ number_format($item->amount,0,',','.') }}</td>
+                            <td>{{ $item->date }}</td>
+                            <td>{{ $item->code }}</td>
+                            <td>{{ $item->user->name }}</td>
+                            <td>{{ number_format($item->total,0,',','.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -75,32 +75,32 @@
             {{-- SUMMARY --}}
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-1"><strong>Catatan:</strong></p>
-                    <p class="text-muted">Terima kasih telah berbelanja 🙏</p>
+                    {{-- <p class="mb-1"><strong>Catatan:</strong></p>
+                    <p class="text-muted">Terima kasih telah berbelanja 🙏</p> --}}
                 </div>
 
                 <div class="col-md-6">
                     <table class="table">
                         <tr>
-                            <th>Subtotal</th>
-                            <td class="text-end">{{ number_format($order->subtotal,0,',','.') }}</td>
+                            <th>Tagihan</th>
+                            <td class="text-end">{{ number_format($order->grand_total,0,',','.') }}</td>
                         </tr>
                         <tr>
-                            <th>Diskon</th>
-                            <td class="text-end">{{ number_format($order->discount,0,',','.') }}</td>
+                            <th>Dibayar</th>
+                            <td class="text-end">{{ number_format($order->paid,0,',','.') }}</td>
                         </tr>
                         <tr>
-                            <th>Biaya Lain</th>
-                            <td class="text-end">{{ number_format($order->expenses,0,',','.') }}</td>
+                            <th>Sisa (Piutang)</th>
+                            <td class="text-end">{{ number_format($order->left,0,',','.') }}</td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <th>Pajak</th>
                             <td class="text-end">{{ number_format($order->taxes,0,',','.') }}</td>
                         </tr>
                         <tr class="table-light">
                             <th>Grand Total</th>
                             <td class="text-end"><strong>{{ number_format($order->grand_total,0,',','.') }}</strong></td>
-                        </tr>
+                        </tr> --}}
                         {{-- <tr>
                             <th>Dibayar</th>
                             <td class="text-end">{{ number_format($order->paid,0,',','.') }}</td>

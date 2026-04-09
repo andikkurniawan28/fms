@@ -3,26 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Production;
+use App\Models\ProductionItem;
 use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Payment;
-use App\Models\Product;
-use App\Models\Termin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-class OrderController extends Controller
+class ProductionController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Order::with(['customer', 'user'])->latest();
+            $data = Production::with(['customer', 'user'])->latest();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('customer', fn($row) => $row->customer->name ?? '-')
                 ->addColumn('user', fn($row) => $row->user->name ?? '-')
+                ->addColumn('order', fn($row) => $row->order->code ?? '-')
                 ->filterColumn('customer', function ($query, $keyword) {
                     $query->whereHas('customer', function ($q) use ($keyword) {
                         $q->where('name', 'like', "%{$keyword}%");
@@ -34,15 +33,13 @@ class OrderController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('order.edit', $row->id);
-                    $showUrl = route('order.show', $row->id);
-                    $deleteUrl = route('order.destroy', $row->id);
-                    $recap = route('order.payment_record_per_invoice', $row->id);
+                    $editUrl = route('production.edit', $row->id);
+                    $showUrl = route('production.show', $row->id);
+                    $deleteUrl = route('production.destroy', $row->id);
 
                     return '<div class="btn-group">
                                 <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>
-                                <a href="' . $recap . '" class="btn btn-sm btn-secondary">Pelunasan</a>
                                 <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
                                     ' . csrf_field() . method_field('DELETE') . '
                                     <button class="btn btn-sm btn-danger">Hapus</button>
@@ -53,22 +50,22 @@ class OrderController extends Controller
                 ->make(true);
         }
 
-        return view('order.index');
+        return view('production.index');
     }
 
-    public function show(Order $order)
+    public function show(Production $production)
     {
-        $order->load(['customer', 'user', 'items']);
+        $production->load(['customer', 'user', 'items']);
 
-        return view('order.show', compact('order'));
+        return view('production.show', compact('production'));
     }
 
     public function create()
     {
-        return view('order.create', [
+        return view('production.create', [
             'customers' => Customer::all(),
             // 'products' => Product::with('packaging', 'productCategory')->get(),
-            'terminals' => Termin::all(),
+            'orders' => Order::all(),
         ]);
     }
 
@@ -76,10 +73,12 @@ class OrderController extends Controller
     {
         $request->validate([
             'date' => 'required|date',
+            'due_date' => 'required|date',
             'customer_id' => 'required|exists:customers,id',
-            'termin_id' => 'required|exists:termins,id',
+            'order_id' => 'required|exists:orders,id',
             'items' => 'required|array',
             'items.*.product_id' => 'required',
+            'items.*.description' => 'required',
             'items.*.qty' => 'required|numeric|min:1',
             'items.*.price' => 'required',
         ]);
@@ -92,7 +91,7 @@ class OrderController extends Controller
         DB::beginTransaction();
 
         try {
-            $code = 'ORD' . date('YmdHis');
+            $code = 'SPK' . date('YmdHis');
 
             $subtotal = 0;
 
@@ -103,29 +102,14 @@ class OrderController extends Controller
                 $subtotal += $qty * $price;
             }
 
-            $discount = $clean($request->discount);
-            $expenses = $clean($request->expenses);
-            $taxes = $clean($request->taxes);
-
-            $grandTotal = $subtotal - $discount + $expenses + $taxes;
-
-            $paid = $clean($request->paid);
-            $left = $grandTotal - $paid;
-
-            $order = Order::create([
+            $production = Production::create([
                 'code' => $code,
                 'date' => $request->date,
+                'due_date' => $request->due_date,
                 'customer_id' => $request->customer_id,
                 'user_id' => auth()->id(),
-                'termin_id' => $request->termin_id,
+                'order_id' => $request->order_id,
                 'subtotal' => $subtotal,
-                'discount' => $discount,
-                'expenses' => $expenses,
-                'taxes' => $taxes,
-                'grand_total' => $grandTotal,
-                'paid' => $paid,
-                'left' => $left,
-                'status' => $paid == 0 ? 'Belum Bayar' : ($left > 0 ? 'Sudah DP' : 'Lunas'),
             ]);
 
             // insert items
@@ -133,31 +117,20 @@ class OrderController extends Controller
                 $price = $clean($item['price']);
                 $qty = $item['qty'];
 
-                OrderItem::create([
-                    'order_id' => $order->id,
+                ProductionItem::create([
+                    'production_id' => $production->id,
                     'product' => $item['product_id'],
+                    'description' => $item['description'],
                     'qty' => $qty,
                     'price' => $price,
                     'amount' => $qty * $price,
                 ]);
             }
 
-            // 🔥 Payment (kalau ada pembayaran)
-            if ($paid > 0) {
-                Payment::create([
-                    'code' => 'PAY' . date('YmdHis'),
-                    'date' => $request->date,
-                    'customer_id' => $request->customer_id,
-                    'user_id' => auth()->id(),
-                    'order_id' => $order->id,
-                    'total' => $paid,
-                ]);
-            }
-
             DB::commit();
 
-            return redirect()->route('order.index')
-                ->with('success', 'Order berhasil dibuat.');
+            return redirect()->route('production.index')
+                ->with('success', 'SPK berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -165,26 +138,28 @@ class OrderController extends Controller
         }
     }
 
-    public function edit(Order $order)
+    public function edit(Production $production)
     {
-        $order->load('items');
+        $production->load('items');
 
-        return view('order.edit', [
-            'order' => $order,
+        return view('production.edit', [
+            'production' => $production,
             'customers' => Customer::all(),
             // 'products' => Product::with('packaging', 'productCategory')->get(),
-            'terminals' => Termin::all(),
+            'orders' => Order::all(),
         ]);
     }
 
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Production $production)
     {
         $request->validate([
             'date' => 'required|date',
+            'due_date' => 'required|date',
             'customer_id' => 'required|exists:customers,id',
-            'termin_id' => 'required|exists:termins,id',
+            'order_id' => 'required|exists:orders,id',
             'items' => 'required|array',
             'items.*.product_id' => 'required',
+            'items.*.description' => 'required',
             'items.*.qty' => 'required|numeric|min:1',
             'items.*.price' => 'required',
         ]);
@@ -207,86 +182,38 @@ class OrderController extends Controller
                 $subtotal += $qty * $price;
             }
 
-            $discount = $clean($request->discount);
-            $expenses = $clean($request->expenses);
-            $taxes = $clean($request->taxes);
-
-            $grandTotal = $subtotal - $discount + $expenses + $taxes;
-
-            $paid = $clean($request->paid);
-            $left = $grandTotal - $paid;
-
-            // 🧠 status sama seperti store
-            $status = $paid == 0
-                ? 'Belum Bayar'
-                : ($left > 0 ? 'Sudah DP' : 'Lunas');
-
-            // ✅ update order
-            $order->update([
+            // ✅ update production
+            $production->update([
                 'date' => $request->date,
+                'due_date' => $request->due_date,
                 'customer_id' => $request->customer_id,
                 'user_id' => auth()->id(),
-                'termin_id' => $request->termin_id,
+                'order_id' => $request->order_id,
                 'subtotal' => $subtotal,
-                'discount' => $discount,
-                'expenses' => $expenses,
-                'taxes' => $taxes,
-                'grand_total' => $grandTotal,
-                'paid' => $paid,
-                'left' => $left,
-                'status' => $status,
             ]);
 
             // 🔥 replace items (best practice simple)
-            $order->items()->delete();
+            $production->items()->delete();
 
             foreach ($request->items as $item) {
                 $price = $clean($item['price']);
                 $qty = $item['qty'];
 
-                OrderItem::create([
-                    'order_id' => $order->id,
+                ProductionItem::create([
+                    'production_id' => $production->id,
                     // 'product_id' => $item['product_id'],
                     'product' => $item['product_id'],
+                    'description' => $item['description'],
                     'qty' => $qty,
                     'price' => $price,
                     'amount' => $qty * $price,
                 ]);
             }
 
-            // 🔥 HANDLE PAYMENT (ini beda dari store, harus hati-hati)
-            $existingPayment = Payment::where('order_id', $order->id)->first();
-
-            if ($paid > 0) {
-
-                if ($existingPayment) {
-                    $existingPayment->update([
-                        'date' => $request->date,
-                        'customer_id' => $request->customer_id,
-                        'user_id' => auth()->id(),
-                        'total' => $paid,
-                    ]);
-                } else {
-                    Payment::create([
-                        'code' => 'PAY' . date('YmdHis'),
-                        'date' => $request->date,
-                        'customer_id' => $request->customer_id,
-                        'user_id' => auth()->id(),
-                        'order_id' => $order->id,
-                        'total' => $paid,
-                    ]);
-                }
-
-            } else {
-                if ($existingPayment) {
-                    $existingPayment->delete();
-                }
-            }
-
             DB::commit();
 
-            return redirect()->route('order.index')
-                ->with('success', 'Order berhasil diperbarui.');
+            return redirect()->route('production.index')
+                ->with('success', 'SPK berhasil diperbarui.');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -295,10 +222,10 @@ class OrderController extends Controller
         }
     }
 
-    public function destroy(Order $order)
+    public function destroy(Production $production)
     {
-        $order->delete();
+        $production->delete();
 
-        return redirect()->route('order.index')->with('success', 'Order berhasil dihapus.');
+        return redirect()->route('production.index')->with('success', 'SPK berhasil dihapus.');
     }
 }

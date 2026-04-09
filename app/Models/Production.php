@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Models\Customer;
-use App\Models\Payment;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Production extends Model
 {
     use HasFactory;
 
@@ -22,19 +22,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function termin(){
-        return $this->belongsTo(Termin::class);
+    public function order(){
+        return $this->belongsTo(Order::class);
     }
 
     public function items(){
-        return $this->hasMany(OrderItem::class);
-    }
-
-    public function payment(){
-        return $this->hasMany(Payment::class);
-    }
-
-    public function production(){
-        return $this->hasOne(Production::class);
+        return $this->hasMany(ProductionItem::class);
     }
 }
