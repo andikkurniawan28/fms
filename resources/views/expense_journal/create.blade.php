@@ -19,11 +19,16 @@
 
                 <div class="mb-3">
                     <label class="form-label">Jenis</label>
-                    <select name="account_id" class="form-control">
+                    <select name="account_id" class="form-control select2">
                         @foreach($accounts as $a)
                         <option value="{{ $a->id }}">{{ $a->name }}</option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Keterangan</label>
+                    <textarea class="form-control" name="description"></textarea>
                 </div>
 
                 <div class="mb-3">

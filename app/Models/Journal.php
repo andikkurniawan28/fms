@@ -75,7 +75,7 @@ class Journal extends Model
             'code' => 'JRN'.date('Ymdhis').'E',
             'date' => $expense->date,
             'user_id' => $expense->user_id,
-            'description' => "Pengeluaran {$expense->code}",
+            'description' => "Pengeluaran | {$expense->account->name} - {$expense->description}",
             'debit' => $expense->total,
             'credit' => $expense->total,
             'expense_journal_id' => $expense->id,
@@ -95,6 +95,37 @@ class Journal extends Model
             'account_id' => $expense->account_id,
             'debit' => $expense->total,
             'credit' => 0,
+        ]);
+    }
+
+
+
+    public static function logIncome($income)
+    {
+        $journal = Journal::create([
+            'code' => 'JRN'.date('Ymdhis').'I',
+            'date' => $income->date,
+            'user_id' => $income->user_id,
+            'description' => "Pemasukan | {$income->account->name} - {$income->description}",
+            'debit' => $income->total,
+            'credit' => $income->total,
+            'income_journal_id' => $income->id,
+        ]);
+
+        // Kas bertambah
+        JournalItem::create([
+            'journal_id' => $journal->id,
+            'account_id' => 1,
+            'debit' => $income->total,
+            'credit' => 0,
+        ]);
+
+        // Akun berkurang
+        JournalItem::create([
+            'journal_id' => $journal->id,
+            'account_id' => $income->account_id,
+            'credit' => $income->total,
+            'debit' => 0,
         ]);
     }
 }

@@ -12,6 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        "ledger.process",
+        "report_profit_loss.process",
+        "report_balance_sheet.process",
+        "report_cash_flow.process",
     ];
 }

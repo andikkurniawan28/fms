@@ -3,9 +3,13 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApiHomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BalanceSheetController;
+use App\Http\Controllers\CashFlowController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpenseJournalController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IncomeJournalController;
+use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\PaymentController;
@@ -13,6 +17,7 @@ use App\Http\Controllers\PaymentRecordPerInvoiceController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionController;
+use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\TerminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -380,4 +385,67 @@ Route::middleware(['auth'])->group(function () {
         ->name('expense_journal.destroy')
         ->middleware('role:Owner');
 
+    /**
+     * =========================
+     * INCOME JOURNAL (OWNER ONLY)
+     * =========================
+     */
+    Route::get('income_journal', [IncomeJournalController::class, 'index'])
+        ->name('income_journal.index')
+        ->middleware('role:Owner');
+
+    Route::get('income_journal/create', [IncomeJournalController::class, 'create'])
+        ->name('income_journal.create')
+        ->middleware('role:Owner');
+
+    Route::post('income_journal', [IncomeJournalController::class, 'store'])
+        ->name('income_journal.store')
+        ->middleware('role:Owner');
+
+    Route::get('income_journal/{income_journal}/edit', [IncomeJournalController::class, 'edit'])
+        ->name('income_journal.edit')
+        ->middleware('role:Owner');
+
+    Route::put('income_journal/{income_journal}', [IncomeJournalController::class, 'update'])
+        ->name('income_journal.update')
+        ->middleware('role:Owner');
+
+    Route::delete('income_journal/{income_journal}', [IncomeJournalController::class, 'destroy'])
+        ->name('income_journal.destroy')
+        ->middleware('role:Owner');
+
+    // BUKU BESAR
+    Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Owner');
+
 });
+
+Route::post('ledger', [LedgerController::class, 'process'])->name('ledger.process');
+
+// LABA RUGI
+Route::get('report_profit_loss',
+    [ProfitLossController::class,'index']
+)->name('report_profit_loss.index');
+
+Route::post('report_profit_loss',
+    [ProfitLossController::class,'process']
+)->name('report_profit_loss.process');
+
+
+// NERACA
+Route::get('report_balance_sheet',
+    [BalanceSheetController::class,'index']
+)->name('report_balance_sheet.index');
+
+Route::post('report_balance_sheet',
+    [BalanceSheetController::class,'process']
+)->name('report_balance_sheet.process');
+
+
+// ARUS KAS
+Route::get('report_cash_flow',
+    [CashFlowController::class,'index']
+)->name('report_cash_flow.index');
+
+Route::post('report_cash_flow',
+    [CashFlowController::class,'process']
+)->name('report_cash_flow.process');

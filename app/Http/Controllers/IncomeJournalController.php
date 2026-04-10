@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
-use App\Models\ExpenseJournal;
+use App\Models\IncomeJournal;
 use App\Models\Journal;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class ExpenseJournalController extends Controller
+class IncomeJournalController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = ExpenseJournal::with(['account','user']);
+            $data = IncomeJournal::with(['account','user']);
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -27,8 +27,8 @@ class ExpenseJournalController extends Controller
                 })
 
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('expense_journal.edit', $row->id);
-                    $deleteUrl = route('expense_journal.destroy', $row->id);
+                    $editUrl = route('income_journal.edit', $row->id);
+                    $deleteUrl = route('income_journal.destroy', $row->id);
 
                     return '<div class="btn-group">
                                 <a href="'.$editUrl.'" class="btn btn-sm btn-warning">Edit</a>
@@ -45,13 +45,13 @@ class ExpenseJournalController extends Controller
                 ->make(true);
         }
 
-        return view('expense_journal.index');
+        return view('income_journal.index');
     }
 
     public function create()
     {
-        return view('expense_journal.create', [
-            'accounts' => Account::where('group', 'Beban')->get(),
+        return view('income_journal.create', [
+            'accounts' => Account::whereIn('id', [5, 10])->get(),
         ]);
     }
 
@@ -64,8 +64,8 @@ class ExpenseJournalController extends Controller
             'description' => 'required',
         ]);
 
-        $expense = ExpenseJournal::create([
-            'code' => "EXP".date('YmdHis'),
+        $income = IncomeJournal::create([
+            'code' => "INC".date('YmdHis'),
             'date' => $request->date,
             'account_id' => $request->account_id,
             'user_id' => auth()->id(),
@@ -73,22 +73,22 @@ class ExpenseJournalController extends Controller
             'description' => $request->description,
         ]);
 
-        Journal::logExpense($expense);
+        Journal::logIncome($income);
 
         return redirect()
-            ->route('expense_journal.index')
-            ->with('success', 'Jurnal pengeluaran berhasil ditambahkan.');
+            ->route('income_journal.index')
+            ->with('success', 'Jurnal pemasukan berhasil ditambahkan.');
     }
 
-    public function edit(ExpenseJournal $expenseJournal)
+    public function edit(IncomeJournal $incomeJournal)
     {
-        return view('expense_journal.edit', [
-            'expenseJournal' => $expenseJournal,
-            'accounts' => Account::where('group', 'Beban')->get(),
+        return view('income_journal.edit', [
+            'incomeJournal' => $incomeJournal,
+            'accounts' => Account::whereIn('id', [5, 10])->get(),
         ]);
     }
 
-    public function update(Request $request, ExpenseJournal $expenseJournal)
+    public function update(Request $request, IncomeJournal $incomeJournal)
     {
         $request->validate([
             'date' => 'required|date',
@@ -97,28 +97,28 @@ class ExpenseJournalController extends Controller
             'description' => 'required',
         ]);
 
-        $expenseJournal->update([
+        $incomeJournal->update([
             'date' => $request->date,
             'account_id' => $request->account_id,
             'total' => $request->total,
             'description' => $request->description,
         ]);
 
-        $expense = $expenseJournal;
-        Journal::where('expense_journal_id', $expense->id)->delete();
-        Journal::logExpense($expense);
+        $income = $incomeJournal;
+        Journal::where('income_journal_id', $income->id)->delete();
+        Journal::logIncome($income);
 
         return redirect()
-            ->route('expense_journal.index')
-            ->with('success', 'Jurnal pengeluaran berhasil diperbarui.');
+            ->route('income_journal.index')
+            ->with('success', 'Jurnal pemasukan berhasil diperbarui.');
     }
 
-    public function destroy(ExpenseJournal $expenseJournal)
+    public function destroy(IncomeJournal $incomeJournal)
     {
-        $expenseJournal->delete();
+        $incomeJournal->delete();
 
         return redirect()
-            ->route('expense_journal.index')
-            ->with('success', 'Jurnal pengeluaran berhasil dihapus.');
+            ->route('income_journal.index')
+            ->with('success', 'Jurnal pemasukan berhasil dihapus.');
     }
 }

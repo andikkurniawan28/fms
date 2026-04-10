@@ -35,6 +35,11 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
 
+            $table->foreignId('income_journal_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

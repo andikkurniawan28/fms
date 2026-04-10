@@ -1,16 +1,16 @@
 @extends('template.master')
 
 @section('transaksi_active', 'active')
-@section('expense_journal_active', 'active')
+@section('income_journal_active', 'active')
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="mb-4"><strong>Edit jurnal pengeluaran</strong></h4>
+    <h4 class="mb-4"><strong>Edit jurnal pemasukan</strong></h4>
 
     <div class="card">
         <div class="card-body">
-            <form id="form-expense"
-                  action="{{ route('expense_journal.update', $expenseJournal->id) }}"
+            <form id="form-income"
+                  action="{{ route('income_journal.update', $incomeJournal->id) }}"
                   method="POST">
                 @csrf
                 @method('PUT')
@@ -20,7 +20,7 @@
                     <input type="date"
                            name="date"
                            class="form-control"
-                           value="{{ old('date', $expenseJournal->date) }}"
+                           value="{{ old('date', $incomeJournal->date) }}"
                            autofocus
                            required>
                 </div>
@@ -30,7 +30,7 @@
                     <select name="account_id" class="form-control select2">
                         @foreach($accounts as $a)
                         <option value="{{ $a->id }}"
-                            {{ old('account_id', $expenseJournal->account_id) == $a->id ? 'selected' : '' }}>
+                            {{ old('account_id', $incomeJournal->account_id) == $a->id ? 'selected' : '' }}>
                             {{ $a->name }}
                         </option>
                         @endforeach
@@ -39,7 +39,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Keterangan</label>
-                    <textarea class="form-control" name="description">{{ $expenseJournal->description }}</textarea>
+                    <textarea class="form-control" name="description">{{ $incomeJournal->description }}</textarea>
                 </div>
 
                 <div class="mb-3">
@@ -47,12 +47,12 @@
                     <input type="text"
                            name="total"
                            class="form-control rupiah"
-                           value="{{ old('total', number_format($expenseJournal->total,0,',','.')) }}"
+                           value="{{ old('total', number_format($incomeJournal->total,0,',','.')) }}"
                            required>
                 </div>
 
                 <div class="d-flex justify-content-end">
-                    <a href="{{ route('expense_journal.index') }}"
+                    <a href="{{ route('income_journal.index') }}"
                        class="btn btn-secondary me-2">Batal</a>
 
                     <button type="submit"
@@ -87,7 +87,7 @@ $(function(){
     });
 
     // bersihin sebelum submit
-    $('#form-expense').on('submit', function(){
+    $('#form-income').on('submit', function(){
         $('.rupiah').each(function(){
             let clean = parseRupiah($(this).val());
             $(this).val(clean);

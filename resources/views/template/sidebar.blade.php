@@ -64,6 +64,15 @@
                 {{-- EXPENSE JOURNAL (Owner) --}}
                 @if (in_array($role, ['Owner']))
                     <li class="menu-item @yield('expense_journal_active')">
+                        <a href="{{ route('income_journal.index') }}" class="menu-link">
+                            <div>Jurnal Pemasukan</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- INCOME JOURNAL (Owner) --}}
+                @if (in_array($role, ['Owner']))
+                    <li class="menu-item @yield('income_journal_active')">
                         <a href="{{ route('expense_journal.index') }}" class="menu-link">
                             <div>Jurnal Pengeluaran</div>
                         </a>
@@ -79,6 +88,43 @@
                 <div>Laporan</div>
             </a>
             <ul class="menu-sub">
+
+                {{-- BUKU BESAR (Owner) --}}
+                @if (in_array($role, ['Owner']))
+                    <li class="menu-item @yield('ledger_active')">
+                        <a href="{{ route('ledger.index') }}" class="menu-link">
+                            <div>Buku Besar</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- ARUS KAS (Owner) --}}
+                @if (in_array($role, ['Owner']))
+                    <li class="menu-item @yield('cash_flow_active')">
+                        <a href="{{ route('report_cash_flow.index') }}" class="menu-link">
+                            <div>Arus Kas</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- LABA RUGI (Owner) --}}
+                @if (in_array($role, ['Owner']))
+                    <li class="menu-item @yield('profit_loss_active')">
+                        <a href="{{ route('report_profit_loss.index') }}" class="menu-link">
+                            <div>Laba Rugi</div>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- NERACA (Owner) --}}
+                @if (in_array($role, ['Owner']))
+                    <li class="menu-item @yield('balance_sheet_active')">
+                        <a href="{{ route('report_balance_sheet.index') }}" class="menu-link">
+                            <div>Neraca</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
 
