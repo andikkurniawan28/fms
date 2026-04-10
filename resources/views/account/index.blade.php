@@ -23,6 +23,7 @@
                             <th>Kelompok</th>
                             <th>Sub</th>
                             <th>Nama</th>
+                            <th>Saldo Normal</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -46,6 +47,7 @@
                 { data: 'group', name: 'group' },
                 { data: 'sub', name: 'sub' },
                 { data: 'name', name: 'name' },
+                { data: 'normal_balance', name: 'normal_balance' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

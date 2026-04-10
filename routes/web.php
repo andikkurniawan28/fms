@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApiHomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpenseJournalController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackagingController;
@@ -348,6 +349,35 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('account/{account}', [AccountController::class, 'destroy'])
         ->name('account.destroy')
+        ->middleware('role:Owner');
+
+    /**
+     * =========================
+     * EXPENSE JOURNAL (OWNER ONLY)
+     * =========================
+     */
+    Route::get('expense_journal', [ExpenseJournalController::class, 'index'])
+        ->name('expense_journal.index')
+        ->middleware('role:Owner');
+
+    Route::get('expense_journal/create', [ExpenseJournalController::class, 'create'])
+        ->name('expense_journal.create')
+        ->middleware('role:Owner');
+
+    Route::post('expense_journal', [ExpenseJournalController::class, 'store'])
+        ->name('expense_journal.store')
+        ->middleware('role:Owner');
+
+    Route::get('expense_journal/{expense_journal}/edit', [ExpenseJournalController::class, 'edit'])
+        ->name('expense_journal.edit')
+        ->middleware('role:Owner');
+
+    Route::put('expense_journal/{expense_journal}', [ExpenseJournalController::class, 'update'])
+        ->name('expense_journal.update')
+        ->middleware('role:Owner');
+
+    Route::delete('expense_journal/{expense_journal}', [ExpenseJournalController::class, 'destroy'])
+        ->name('expense_journal.destroy')
         ->middleware('role:Owner');
 
 });

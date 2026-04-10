@@ -42,11 +42,20 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'code' => 'required|string|max:255|unique:accounts,code',
             'name' => 'required|string|max:255|unique:accounts,name',
+            'sub' => 'required',
         ]);
 
+        $group = Account::defineGroup($request->sub);
+        $normal_balance = Account::defineNormalBalance($group);
+
         Account::create([
+            'code' => $request->code,
             'name' => $request->name,
+            'sub' => $request->sub,
+            'group' => $group,
+            'normal_balance' => $normal_balance,
         ]);
 
         return redirect()->route('account.index')->with('success', 'akun berhasil ditambahkan.');
@@ -57,17 +66,29 @@ class AccountController extends Controller
         return view('account.edit', compact('account'));
     }
 
-    public function update(Request $request, Account $account)
+    public function update(Request $request, $id)
     {
+        $account = Account::findOrFail($id);
+
         $request->validate([
+            'code' => 'required|string|max:255|unique:accounts,code,' . $account->id,
             'name' => 'required|string|max:255|unique:accounts,name,' . $account->id,
+            'sub' => 'required',
         ]);
+
+        $group = Account::defineGroup($request->sub);
+        $normal_balance = Account::defineNormalBalance($group);
 
         $account->update([
+            'code' => $request->code,
             'name' => $request->name,
+            'sub' => $request->sub,
+            'group' => $group,
+            'normal_balance' => $normal_balance,
         ]);
 
-        return redirect()->route('account.index')->with('success', 'akun berhasil diperbarui.');
+        return redirect()->route('account.index')
+            ->with('success', 'akun berhasil diupdate.');
     }
 
     public function destroy(Account $account)

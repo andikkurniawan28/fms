@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Journal;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -92,7 +93,7 @@ class PaymentController extends Controller
                 return back()->with('error', 'pembayaran melebihi sisa tagihan');
             }
 
-            Payment::create([
+            $payment = Payment::create([
                 'code' => 'PAY' . date('YmdHis'),
                 'date' => $request->date,
                 'customer_id' => $order->customer_id,
@@ -100,6 +101,9 @@ class PaymentController extends Controller
                 'order_id' => $order->id,
                 'total' => $total,
             ]);
+
+            // Catat Jurnal
+            Journal::logPayment($payment);
 
             $newPaid = $order->paid + $total;
             $left = $order->grand_total - $newPaid;
@@ -163,6 +167,10 @@ class PaymentController extends Controller
                 'total' => $newTotal,
                 'user_id' => auth()->id(),
             ]);
+
+            // Catat ulang jurnal
+            Journal::where('payment_id', $payment->id)->delete();
+            Journal::logPayment($payment);
 
             // hitung ulang
             $order->paid += $newTotal;

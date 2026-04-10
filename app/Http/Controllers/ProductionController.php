@@ -65,7 +65,8 @@ class ProductionController extends Controller
         return view('production.create', [
             'customers' => Customer::all(),
             // 'products' => Product::with('packaging', 'productCategory')->get(),
-            'orders' => Order::all(),
+            // 'orders' => Order::all(),
+            'orders' => Order::whereDoesntHave('production')->get(),
         ]);
     }
 
@@ -146,7 +147,8 @@ class ProductionController extends Controller
             'production' => $production,
             'customers' => Customer::all(),
             // 'products' => Product::with('packaging', 'productCategory')->get(),
-            'orders' => Order::all(),
+            // 'orders' => Order::all(),
+            'orders' => Order::whereDoesntHave('production')->get(),
         ]);
     }
 

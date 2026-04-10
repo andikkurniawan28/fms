@@ -61,6 +61,15 @@
                     </li>
                 @endif
 
+                {{-- EXPENSE JOURNAL (Owner) --}}
+                @if (in_array($role, ['Owner']))
+                    <li class="menu-item @yield('expense_journal_active')">
+                        <a href="{{ route('expense_journal.index') }}" class="menu-link">
+                            <div>Jurnal Pengeluaran</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
 

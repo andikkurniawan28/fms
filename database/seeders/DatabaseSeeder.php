@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Account;
+use App\Models\Customer;
 use App\Models\Packaging;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -31,6 +32,10 @@ class DatabaseSeeder extends Seeder
                 'username' => 'era',
                 'password' => bcrypt('era'),
             ]
+        ]);
+
+        Customer::insert([
+            ['name' => 'Andik', 'whatsapp' => '085733465399', 'description' => 'Kebon Agung'],
         ]);
 
         Termin::insert([
@@ -120,22 +125,23 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Account::insert([
-            ['group' => 'Aset', 'sub' => 'Aset Lancar', 'code' => '1101', 'name' => 'Kas/Bank'],
-            ['group' => 'Aset', 'sub' => 'Aset Lancar', 'code' => '1102', 'name' => 'Piutang Usaha'],
-            ['group' => 'Aset', 'sub' => 'Aset Tetap', 'code' => '1201', 'name' => 'Peralatan Produksi'],
-            ['group' => 'Kewajiban', 'sub' => 'Kewajiban Jangka Pendek', 'code' => '2101', 'name' => 'Hutang Usaha'],
-            ['group' => 'Modal', 'sub' => 'Modal', 'code' => '3101', 'name' => 'Modal Disetor'],
-            ['group' => 'Modal', 'sub' => 'Modal', 'code' => '3102', 'name' => 'Prive'],
-            ['group' => 'Modal', 'sub' => 'Modal', 'code' => '3103', 'name' => 'Laba Ditahan'],
-            ['group' => 'Pendapatan', 'sub' => 'Pendapatan Usaha', 'code' => '5101', 'name' => 'Penjualan Produk'],
-            ['group' => 'Pendapatan', 'sub' => 'Pendapatan Lain-lain', 'code' => '5201', 'name' => 'Pendapatan Lain-lain'],
-            ['group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6101', 'name' => 'Beban Operasional'],
-            ['group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6102', 'name' => 'Beban Sosial'],
-            ['group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6103', 'name' => 'Pembelian Bahan Baku'],
-            ['group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6104', 'name' => 'Beban Sewa'],
-            ['group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6105', 'name' => 'Beban Gaji Karyawan'],
-            ['group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6106', 'name' => 'Beban Listrik, PAM, Internet'],
-            ['group' => 'Beban', 'sub' => 'Beban Lain-lain', 'code' => '6201', 'name' => 'Beban Lain-lain'],
+            ['id' => 1, 'group' => 'Aset', 'sub' => 'Aset Lancar', 'code' => '1101', 'name' => 'Kas/Bank', 'normal_balance' => 'Debit'],
+            ['id' => 2, 'group' => 'Aset', 'sub' => 'Aset Lancar', 'code' => '1102', 'name' => 'Piutang Usaha', 'normal_balance' => 'Debit'],
+            ['id' => 3, 'group' => 'Aset', 'sub' => 'Aset Tetap', 'code' => '1201', 'name' => 'Peralatan Produksi', 'normal_balance' => 'Debit'],
+            ['id' => 4, 'group' => 'Kewajiban', 'sub' => 'Kewajiban Jangka Pendek', 'code' => '2101', 'name' => 'Hutang Usaha', 'normal_balance' => 'Credit'],
+            ['id' => 5, 'group' => 'Modal', 'sub' => 'Modal', 'code' => '3101', 'name' => 'Modal Disetor', 'normal_balance' => 'Credit'],
+            ['id' => 6, 'group' => 'Modal', 'sub' => 'Modal', 'code' => '3102', 'name' => 'Prive', 'normal_balance' => 'Credit'],
+            ['id' => 7, 'group' => 'Modal', 'sub' => 'Modal', 'code' => '3103', 'name' => 'Laba Ditahan', 'normal_balance' => 'Credit'],
+            ['id' => 8, 'group' => 'Pendapatan', 'sub' => 'Pendapatan Usaha', 'code' => '5101', 'name' => 'Penjualan Produk', 'normal_balance' => 'Credit'],
+            ['id' => 9, 'group' => 'Pendapatan', 'sub' => 'Pendapatan Usaha', 'code' => '5102', 'name' => 'Pendapatan Ditangguhkan', 'normal_balance' => 'Credit'],
+            ['id' => 10, 'group' => 'Pendapatan', 'sub' => 'Pendapatan Lain-lain', 'code' => '5201', 'name' => 'Pendapatan Lain-lain', 'normal_balance' => 'Credit'],
+            ['id' => 11, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6101', 'name' => 'Beban Operasional', 'normal_balance' => 'Debit'],
+            ['id' => 12, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6102', 'name' => 'Beban Sosial', 'normal_balance' => 'Debit'],
+            ['id' => 13, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6103', 'name' => 'Pembelian Bahan Baku', 'normal_balance' => 'Debit'],
+            ['id' => 14, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6104', 'name' => 'Beban Sewa', 'normal_balance' => 'Debit'],
+            ['id' => 15, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6105', 'name' => 'Beban Gaji Karyawan', 'normal_balance' => 'Debit'],
+            ['id' => 16, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6106', 'name' => 'Beban Listrik, PAM, Internet', 'normal_balance' => 'Debit'],
+            ['id' => 17, 'group' => 'Beban', 'sub' => 'Beban Lain-lain', 'code' => '6201', 'name' => 'Beban Lain-lain', 'normal_balance' => 'Debit'],
         ]);
 
         // Product::insert([

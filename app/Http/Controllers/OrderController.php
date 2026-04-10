@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Journal;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -128,6 +129,9 @@ class OrderController extends Controller
                 'status' => $paid == 0 ? 'Belum Bayar' : ($left > 0 ? 'Sudah DP' : 'Lunas'),
             ]);
 
+            // Catat di Jurnal
+            Journal::logReceivable($order);
+
             // insert items
             foreach ($request->items as $item) {
                 $price = $clean($item['price']);
@@ -144,7 +148,7 @@ class OrderController extends Controller
 
             // 🔥 Payment (kalau ada pembayaran)
             if ($paid > 0) {
-                Payment::create([
+                $payment = Payment::create([
                     'code' => 'PAY' . date('YmdHis'),
                     'date' => $request->date,
                     'customer_id' => $request->customer_id,
@@ -152,6 +156,9 @@ class OrderController extends Controller
                     'order_id' => $order->id,
                     'total' => $paid,
                 ]);
+
+                // Catat Jurnal
+                Journal::logPayment($payment);
             }
 
             DB::commit();
@@ -237,6 +244,10 @@ class OrderController extends Controller
                 'status' => $status,
             ]);
 
+            // Hapus dulu, buat baru
+            Journal::where('order_id', $order->id)->delete();
+            Journal::logReceivable($order);
+
             // 🔥 replace items (best practice simple)
             $order->items()->delete();
 
@@ -266,8 +277,9 @@ class OrderController extends Controller
                         'user_id' => auth()->id(),
                         'total' => $paid,
                     ]);
+                    $payment = $existingPayment;
                 } else {
-                    Payment::create([
+                    $payment = Payment::create([
                         'code' => 'PAY' . date('YmdHis'),
                         'date' => $request->date,
                         'customer_id' => $request->customer_id,
@@ -276,10 +288,14 @@ class OrderController extends Controller
                         'total' => $paid,
                     ]);
                 }
+                Journal::where('payment_id', $payment->id)->delete();
+                Journal::logPayment($payment);
 
             } else {
                 if ($existingPayment) {
                     $existingPayment->delete();
+                    $payment = $existingPayment;
+                    Journal::where('payment_id', $payment->id)->delete();
                 }
             }
 

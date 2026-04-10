@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('journal_items', function (Blueprint $table) {
             $table->id();
-            $table->string('group');
-            $table->string('sub');
-            $table->string('code')->unique();
-            $table->string('name')->unique();
-            $table->string('normal_balance');
+            $table->foreignId('journal_id')->constrained()->onDelete('cascade');
+            $table->foreignId('account_id')->constrained();
+            $table->double('debit');
+            $table->double('credit');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('journal_items');
     }
 };
