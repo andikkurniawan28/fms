@@ -65,10 +65,12 @@ class BalanceSheetController extends Controller
         'total_beban' => $beban->sum('balance'),
 
         'total_pasiva' =>
-            $kewajiban->sum('balance')
+            ($kewajiban->sum('balance')
             + $ekuitas->sum('balance')
             + $pendapatan->sum('balance')
-            - $beban->sum('balance')
+            - $beban->sum('balance')),
+
+        // 'total_laba' => $pendapatan->sum('balance') - $beban->sum('balance'),
 
     ]);
 }

@@ -47,14 +47,14 @@
 
         {{-- ASET --}}
         <div class="col-md-6">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
                     <strong>Aset</strong>
                 </div>
 
                 <div class="card-body">
 
-                    <table class="table table-bordered">
+                    <table class="table table-sm table-bordered">
                         <thead>
                             <tr>
                                 <th>Akun</th>
@@ -75,6 +75,27 @@
 
                 </div>
             </div>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Total Aktiva</strong>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Total Aktiva</th>
+                                <th class="text-end" id="total_aktiva"></th>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+                </div>
+            </div>
+
         </div>
 
 
@@ -88,7 +109,7 @@
 
                 <div class="card-body">
 
-                    <table class="table table-bordered">
+                    <table class="table table-sm table-bordered">
 
                         <thead>
                             <tr>
@@ -120,7 +141,7 @@
 
                 <div class="card-body">
 
-                    <table class="table table-bordered">
+                    <table class="table table-sm table-bordered">
 
                         <thead>
                             <tr>
@@ -152,7 +173,7 @@
 
                 <div class="card-body">
 
-                    <table class="table table-bordered">
+                    <table class="table table-sm table-bordered">
 
                         <thead>
                             <tr>
@@ -177,14 +198,14 @@
 
 
             {{-- BEBAN --}}
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
                     <strong>Beban</strong>
                 </div>
 
                 <div class="card-body">
 
-                    <table class="table table-bordered">
+                    <table class="table table-sm table-bordered">
 
                         <thead>
                             <tr>
@@ -202,11 +223,31 @@
                                 <th class="text-end" id="total_beban"></th>
                             </tr>
 
+                        </tfoot>
+
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Total Pasiva</strong>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Total Laba</th>
+                                <th class="text-end" id="total_laba"></th>
+                            </tr>
+
                             <tr>
                                 <th>Total Pasiva</th>
                                 <th class="text-end" id="total_pasiva"></th>
                             </tr>
-
                         </tfoot>
 
                     </table>
@@ -239,6 +280,7 @@ $('#btn-process').click(function(){
 
     .done(function(res){
 
+        let total_laba = res.total_pendapatan - res.total_beban;
         renderTable('aset-body', res.aset)
         renderTable('kewajiban-body', res.kewajiban)
         renderTable('ekuitas-body', res.ekuitas)
@@ -246,11 +288,13 @@ $('#btn-process').click(function(){
         renderTable('beban-body', res.beban)
 
         $('#total_aset').html(format(res.total_aset))
+        $('#total_aktiva').html(format(res.total_aset))
         $('#total_kewajiban').html(format(res.total_kewajiban))
         $('#total_ekuitas').html(format(res.total_ekuitas))
         $('#total_pendapatan').html(format(res.total_pendapatan))
         $('#total_beban').html(format(res.total_beban))
         $('#total_pasiva').html(format(res.total_pasiva))
+        $('#total_laba').html(format(total_laba))
 
     })
 

@@ -31,7 +31,19 @@ class DatabaseSeeder extends Seeder
                 'role_id' => 1,
                 'username' => 'era',
                 'password' => bcrypt('era'),
-            ]
+            ],
+            [
+                'name' => 'Devi',
+                'role_id' => 2,
+                'username' => 'devi',
+                'password' => bcrypt('devi'),
+            ],
+            [
+                'name' => 'Ila',
+                'role_id' => 2,
+                'username' => 'ila',
+                'password' => bcrypt('ila'),
+            ],
         ]);
 
         Customer::insert([

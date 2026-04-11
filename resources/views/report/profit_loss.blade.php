@@ -49,25 +49,6 @@
 
                     <tbody id="table-body"></tbody>
 
-                    <tfoot>
-
-                        <tr>
-                            <th>Total Pendapatan</th>
-                            <th class="text-end" id="total_pendapatan"></th>
-                        </tr>
-
-                        <tr>
-                            <th>Total Beban</th>
-                            <th class="text-end" id="total_beban"></th>
-                        </tr>
-
-                        <tr>
-                            <th>Laba Bersih</th>
-                            <th class="text-end" id="laba"></th>
-                        </tr>
-
-                    </tfoot>
-
                 </table>
 
             </div>
@@ -82,51 +63,109 @@
     <script>
         $('#btn-process').click(function() {
 
-    $.post("{{ route('report_profit_loss.process') }}", {
+            $.post("{{ route('report_profit_loss.process') }}", {
 
-        _token: "{{ csrf_token() }}",
-        date_from: $('#date_from').val(),
-        date_to: $('#date_to').val()
+                _token: "{{ csrf_token() }}",
+                date_from: $('#date_from').val(),
+                date_to: $('#date_to').val()
 
-    })
+            })
 
-    .done(function(res){
+            .done(function(res){
 
-        console.log(res); // debug response
+                let html = '';
 
-        let html = '';
+                // ===== PENDAPATAN =====
+                html += `
+                    <tr class="table-primary">
+                        <td colspan="2"><strong>PENDAPATAN</strong></td>
+                    </tr>
+                    `;
 
-        res.data.forEach(function(row) {
+                res.pendapatan_detail.forEach(function(row) {
+                    let isMinus = row.balance < 0 ? 'text-danger fw-bold' : '';
 
-            html += `
-<tr>
-<td>${row.code} - ${row.name}</td>
-<td class="text-end">${format(row.balance)}</td>
-</tr>
-`;
+                    html += `
+                    <tr>
+                    <td>${row.code} - ${row.name}</td>
+                    <td class="text-end ${isMinus}">${format(row.balance)}</td>
+                    </tr>
+                    `;
+                });
+
+                html += `
+                    <tr class="table-light">
+                        <th>Total Pendapatan</th>
+                        <th class="text-end" id="total_pendapatan"></th>
+                    </tr>
+                    `;
+
+                                    // ===== BEBAN =====
+                                    html += `
+                    <tr class="table-danger">
+                        <td colspan="2"><strong>BEBAN</strong></td>
+                    </tr>
+                    `;
+
+                res.beban_detail.forEach(function(row) {
+                    let isMinus = row.balance < 0 ? 'text-danger fw-bold' : '';
+
+                    html += `
+                    <tr>
+                    <td>${row.code} - ${row.name}</td>
+                    <td class="text-end ${isMinus}">${format(row.balance)}</td>
+                    </tr>
+                    `;
+                                    });
+
+                                    html += `
+                    <tr class="table-light">
+                        <th>Total Beban</th>
+                        <th class="text-end" id="total_beban"></th>
+                    </tr>
+
+                    <tr class="table-warning">
+                        <th>Laba Bersih</th>
+                        <th class="text-end fw-bold" id="laba"></th>
+                    </tr>
+                    `;
+
+                $('#table-body').html(html);
+
+                setValue('#total_pendapatan', res.pendapatan);
+                setValue('#total_beban', res.beban);
+                setValue('#laba', res.laba, true);
+
+            })
+
+            .fail(function(xhr){
+                console.log(xhr.responseText);
+                alert('Terjadi error, cek console');
+            });
 
         });
 
-        $('#table-body').html(html);
-
-        $('#total_pendapatan').html(format(res.pendapatan));
-        $('#total_beban').html(format(res.beban));
-        $('#laba').html(format(res.laba));
-
-    })
-
-    .fail(function(xhr){
-
-        console.log(xhr.responseText); // ERROR MUNCUL DISINI
-
-        alert('Terjadi error, cek console');
-
-    });
-
-});
-
         function format(num) {
-            return new Intl.NumberFormat('id-ID').format(num || 0);
+            let n = Number(num) || 0;
+            let abs = Math.abs(n);
+            let formatted = new Intl.NumberFormat('id-ID').format(abs);
+
+            return n < 0 ? `(${formatted})` : formatted;
+        }
+
+        function setValue(selector, value, highlight = false) {
+            let el = $(selector);
+            let isMinus = value < 0;
+
+            el.removeClass('text-danger text-success fw-bold');
+
+            if (isMinus) {
+                el.addClass('text-danger fw-bold');
+            } else if (highlight) {
+                el.addClass('text-success fw-bold');
+            }
+
+            el.html(format(value));
         }
     </script>
 

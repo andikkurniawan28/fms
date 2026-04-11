@@ -13,6 +13,7 @@ class ProfitLossController extends Controller
         return view('report.profit_loss');
     }
 
+
     public function process(Request $request)
     {
         $date_from = $request->date_from;
@@ -39,14 +40,20 @@ class ProfitLossController extends Controller
             $account->balance = $balance;
         }
 
-        $pendapatan = $accounts->where('group','Pendapatan')->sum('balance');
-        $beban = $accounts->where('group','Beban')->sum('balance');
+        // 🔥 GROUPING DI SINI
+        $pendapatan_detail = $accounts->where('group','Pendapatan')->values();
+        $beban_detail      = $accounts->where('group','Beban')->values();
+
+        $pendapatan = $pendapatan_detail->sum('balance');
+        $beban      = $beban_detail->sum('balance');
 
         return response()->json([
-            'data' => $accounts,
-            'pendapatan' => $pendapatan,
-            'beban' => $beban,
-            'laba' => $pendapatan - $beban
+            'pendapatan_detail' => $pendapatan_detail,
+            'beban_detail'      => $beban_detail,
+            'pendapatan'        => $pendapatan,
+            'beban'             => $beban,
+            'laba'              => $pendapatan - $beban
         ]);
     }
+
 }

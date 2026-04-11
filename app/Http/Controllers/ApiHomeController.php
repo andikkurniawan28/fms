@@ -33,11 +33,12 @@ class ApiHomeController extends Controller
         $unpaidCount = Order::where('left', '>', 0)->count();
 
         // 🔥 Produk terlaris
-        $topProduct = OrderItem::select('product_id', DB::raw('SUM(qty) as total'))
-            ->with('product.packaging')
-            ->groupBy('product_id')
-            ->orderByDesc('total')
-            ->first();
+        // $topProduct = OrderItem::select('product_id', DB::raw('SUM(qty) as total'))
+        //     ->with('product.packaging')
+        //     ->groupBy('product_id')
+        //     ->orderByDesc('total')
+        //     ->first();
+        $topProduct = null;
 
         // 🔥 Reminder (jatuh tempo hari ini - asumsi pakai date)
         $dueToday = Order::whereDate('date', now())
