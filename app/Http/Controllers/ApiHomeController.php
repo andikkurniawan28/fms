@@ -2,65 +2,112 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ExpenseJournal;
+use App\Models\IncomeJournal;
+use App\Models\JournalItem;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\Production;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ApiHomeController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
     public function __invoke(Request $request)
     {
-        // 🔥 Hari ini
-        $todayOrder = Order::whereDate('date', now())->count();
-        $todayRevenue = Order::whereDate('date', now())->sum('grand_total');
+        $now = now();
 
-        // 🔥 Bulan ini
-        $monthlyRevenue = Order::whereMonth('date', now()->month)
-            ->whereYear('date', now()->year)
+        // =========================
+        // TODAY
+        // =========================
+        $todayOrder = Order::whereDate('date', $now)->count();
+        $todaySales = Order::whereDate('date', $now)->sum('grand_total');
+        $todayPayment = Payment::whereDate('date', $now)->sum('total');
+        $todaySPK = Production::whereDate('date', $now)->count();
+
+        // =========================
+        // 🔥 MONTHLY
+        // =========================
+        $monthlySales = Order::whereMonth('date', $now->month)
+            ->whereYear('date', $now->year)
             ->sum('grand_total');
 
-        $totalOrder = Order::count();
+        $monthlyPayment = Payment::whereMonth('date', $now->month)
+            ->whereYear('date', $now->year)
+            ->sum('total');
 
-        // 🔥 Payment & Piutang
-        $payment = Payment::whereMonth('date', now()->month)->sum('total');
-        $receivable = Order::sum('left');
+        // =========================
+        // 🔥 MONTHLY (AKUNTANSI BASE)
+        // =========================
 
-        $unpaidCount = Order::where('left', '>', 0)->count();
+        // Pendapatan (Credit)
+        $monthlyIncome = JournalItem::join('accounts', 'accounts.id', '=', 'journal_items.account_id')
+            ->join('journals', 'journals.id', '=', 'journal_items.journal_id')
+            ->where('accounts.group', 'Pendapatan')
+            ->whereMonth('journals.date', $now->month)
+            ->whereYear('journals.date', $now->year)
+            ->sum('journal_items.credit');
 
-        // 🔥 Produk terlaris
-        // $topProduct = OrderItem::select('product_id', DB::raw('SUM(qty) as total'))
-        //     ->with('product.packaging')
-        //     ->groupBy('product_id')
-        //     ->orderByDesc('total')
-        //     ->first();
-        $topProduct = null;
+        // Beban (Debit)
+        $monthlyExpense = JournalItem::join('accounts', 'accounts.id', '=', 'journal_items.account_id')
+            ->join('journals', 'journals.id', '=', 'journal_items.journal_id')
+            ->where('accounts.group', 'Beban')
+            ->whereMonth('journals.date', $now->month)
+            ->whereYear('journals.date', $now->year)
+            ->sum('journal_items.debit');
 
-        // 🔥 Reminder (jatuh tempo hari ini - asumsi pakai date)
-        $dueToday = Order::whereDate('date', now())
-            ->where('left', '>', 0)
-            ->count();
+        // Profit
+        $profit = $monthlyIncome - $monthlyExpense;
 
+        // =========================
+        // RECEIVABLE
+        // =========================
+        $totalReceivable = Order::sum('left');
+        $unpaidOrder = Order::where('left', '>', 0)->count();
+
+        // =========================
+        // PRODUCTION (SPK)
+        // =========================
+        $inProduction = Production::count();
+
+        $pendingProduction = Order::whereDoesntHave('production')->count();
+
+        $pendingValue = Order::whereDoesntHave('production')
+            ->sum('grand_total');
+
+        $conversionRate = $unpaidOrder > 0
+            ? round(($inProduction / ($inProduction + $pendingProduction)) * 100, 2)
+            : 0;
+
+        // =========================
+        // RESPONSE
+        // =========================
         return response()->json([
             'today' => [
                 'order' => $todayOrder,
-                'revenue' => $todayRevenue,
+                'sales' => $todaySales,
+                'payment' => $todayPayment,
+                'spk' => $todaySPK,
             ],
-            'monthly_revenue' => $monthlyRevenue,
-            'total_order' => $totalOrder,
-            'payment' => $payment,
-            'receivable' => $receivable,
-            'unpaid_count' => $unpaidCount,
-            'top_product' => [
-                'name' => $topProduct?->product?->name,
-                'packaging' => $topProduct?->product?->packaging?->name,
-                'total' => $topProduct?->total,
+
+            'monthly' => [
+                'sales' => $monthlySales,
+                'payment' => $monthlyPayment,
+                'income' => $monthlyIncome,
+                'expense' => $monthlyExpense,
+                'profit' => $profit,
             ],
-            'due_today' => $dueToday,
+
+            'receivable' => [
+                'total' => $totalReceivable,
+                'unpaid_order' => $unpaidOrder,
+            ],
+
+            'production' => [
+                'in_production' => $inProduction,
+                'pending_order' => $pendingProduction,
+                'pending_value' => $pendingValue,
+                'conversion_rate' => $conversionRate,
+            ],
         ]);
     }
 }
