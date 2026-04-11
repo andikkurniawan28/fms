@@ -63,7 +63,7 @@
 
                 {{-- EXPENSE JOURNAL (Owner) --}}
                 @if (in_array($role, ['Owner']))
-                    <li class="menu-item @yield('expense_journal_active')">
+                    <li class="menu-item @yield('income_journal_active')">
                         <a href="{{ route('income_journal.index') }}" class="menu-link">
                             <div>Jurnal Pemasukan</div>
                         </a>
@@ -72,7 +72,7 @@
 
                 {{-- INCOME JOURNAL (Owner) --}}
                 @if (in_array($role, ['Owner']))
-                    <li class="menu-item @yield('income_journal_active')">
+                    <li class="menu-item @yield('expense_journal_active')">
                         <a href="{{ route('expense_journal.index') }}" class="menu-link">
                             <div>Jurnal Pengeluaran</div>
                         </a>
