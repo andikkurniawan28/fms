@@ -38,7 +38,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <label>Order</label>
                             <select name="order_id" class="form-select select2" required>
                                 <option value="">-- Pilih --</option>
@@ -48,7 +48,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
 
                     {{-- Items --}}

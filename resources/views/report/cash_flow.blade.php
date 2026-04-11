@@ -16,7 +16,7 @@
             <div class="row">
 
                 <div class="col-md-3">
-                    <label>Dari</label>
+                    <label class="form-label">Dari</label>
                     <input type="date"
                         id="date_from"
                         class="form-control"
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <label>Sampai</label>
+                    <label class="form-label">Sampai</label>
                     <input type="date"
                         id="date_to"
                         class="form-control"

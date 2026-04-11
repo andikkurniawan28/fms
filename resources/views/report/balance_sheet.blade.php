@@ -16,7 +16,7 @@
             <div class="row">
 
                 <div class="col-md-3">
-                    <label>Dari</label>
+                    <label class="form-label">Dari</label>
                     <input type="date"
                         id="date_from"
                         class="form-control"
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <label>Sampai</label>
+                    <label class="form-label">Sampai</label>
                     <input type="date"
                         id="date_to"
                         class="form-control"
@@ -115,7 +115,7 @@
             {{-- EKUITAS --}}
             <div class="card mb-3">
                 <div class="card-header">
-                    <strong>Ekuitas</strong>
+                    <strong>Modal</strong>
                 </div>
 
                 <div class="card-body">
@@ -133,7 +133,7 @@
 
                         <tfoot>
                             <tr>
-                                <th>Total Ekuitas</th>
+                                <th>Total Modal</th>
                                 <th class="text-end" id="total_ekuitas"></th>
                             </tr>
                         </tfoot>

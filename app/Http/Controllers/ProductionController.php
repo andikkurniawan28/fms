@@ -158,7 +158,7 @@ class ProductionController extends Controller
             'date' => 'required|date',
             'due_date' => 'required|date',
             'customer_id' => 'required|exists:customers,id',
-            'order_id' => 'required|exists:orders,id',
+            // 'order_id' => 'required|exists:orders,id',
             'items' => 'required|array',
             'items.*.product_id' => 'required',
             'items.*.description' => 'required',
@@ -190,7 +190,7 @@ class ProductionController extends Controller
                 'due_date' => $request->due_date,
                 'customer_id' => $request->customer_id,
                 'user_id' => auth()->id(),
-                'order_id' => $request->order_id,
+                // 'order_id' => $request->order_id,
                 'subtotal' => $subtotal,
             ]);
 
