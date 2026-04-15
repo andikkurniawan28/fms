@@ -35,7 +35,7 @@
                         <select name="via" class="form-control select2" required>
                             <option value="">-- Pilih --</option>
                             <option value="Cash" {{ $payment->via == 'Cash' ? 'selected' : '' }}>Cash</option>
-                            <option value="Transfer" {{ $payment->via == 'Transfer' ? 'selected' : '' }}>Transfer</option>
+                            <option value="QRIS" {{ $payment->via == 'QRIS' ? 'selected' : '' }}>QRIS</option>
                         </select>
                     </div>
 

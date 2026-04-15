@@ -40,7 +40,7 @@
                         <select name="via" class="form-control select2" required>
                             <option value="">-- Pilih --</option>
                             <option value="Cash">Cash</option>
-                            <option value="Transfer">Transfer</option>
+                            <option value="QRIS">QRIS</option>
                         </select>
                     </div>
 
