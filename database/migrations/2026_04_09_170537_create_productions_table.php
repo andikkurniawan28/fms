@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->date('date');
             $table->date('due_date');
+            $table->date('take_date');
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->double('subtotal');

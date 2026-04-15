@@ -75,6 +75,7 @@ class ProductionController extends Controller
         $request->validate([
             'date' => 'required|date',
             'due_date' => 'required|date',
+            'take_date' => 'required|date',
             'customer_id' => 'required|exists:customers,id',
             'order_id' => 'required|exists:orders,id',
             'items' => 'required|array',
@@ -107,6 +108,7 @@ class ProductionController extends Controller
                 'code' => $code,
                 'date' => $request->date,
                 'due_date' => $request->due_date,
+                'take_date' => $request->take_date,
                 'customer_id' => $request->customer_id,
                 'user_id' => auth()->id(),
                 'order_id' => $request->order_id,
@@ -157,6 +159,7 @@ class ProductionController extends Controller
         $request->validate([
             'date' => 'required|date',
             'due_date' => 'required|date',
+            'take_date' => 'required|date',
             'customer_id' => 'required|exists:customers,id',
             // 'order_id' => 'required|exists:orders,id',
             'items' => 'required|array',
@@ -188,6 +191,7 @@ class ProductionController extends Controller
             $production->update([
                 'date' => $request->date,
                 'due_date' => $request->due_date,
+                'take_date' => $request->take_date,
                 'customer_id' => $request->customer_id,
                 'user_id' => auth()->id(),
                 // 'order_id' => $request->order_id,

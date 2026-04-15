@@ -14,15 +14,20 @@
                     @method('PUT')
 
                     {{-- Header --}}
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <div class="col-md-3">
                             <label>Tanggal Terbit</label>
                             <input type="date" name="date" value="{{ $production->date }}" class="form-control" required>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label>Tanggal Acara</label>
                             <input type="date" name="due_date" value="{{ $production->due_date }}" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Pengambilan</label>
+                            <input type="date" name="take_date" value="{{ $production->take_date }}" class="form-control" required>
                         </div>
 
                         <div class="col-md-3">

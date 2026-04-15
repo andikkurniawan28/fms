@@ -25,6 +25,7 @@
                             <th>Customer</th>
                             <th>Admin</th>
                             <th>Total</th>
+                            <th>Via</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -55,6 +56,7 @@
                 { data: 'user', name: 'user' },
                 // { data: 'total', name: 'total', render: function(data) { return formatRupiah(data); } },
                 { data: 'total', name: 'total', render: function(data) { return formatRupiah(data); } },
+                { data: 'via', name: 'via' },
                 { data: 'action', name: 'action', paymentable: false, searchable: false }
             ]
         });

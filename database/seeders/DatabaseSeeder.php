@@ -154,6 +154,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 15, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6105', 'name' => 'Beban Gaji Karyawan', 'normal_balance' => 'Debit'],
             ['id' => 16, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6106', 'name' => 'Beban Listrik, PAM, Internet', 'normal_balance' => 'Debit'],
             ['id' => 17, 'group' => 'Beban', 'sub' => 'Beban Lain-lain', 'code' => '6201', 'name' => 'Beban Lain-lain', 'normal_balance' => 'Debit'],
+            ['id' => 18, 'group' => 'Beban', 'sub' => 'Beban Lain-lain', 'code' => '6202', 'name' => 'Tabungan', 'normal_balance' => 'Debit'],
         ]);
 
         // Product::insert([

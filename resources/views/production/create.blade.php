@@ -14,14 +14,19 @@
 
                     {{-- Header --}}
                     <div class="row mb-3">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label>Tanggal Terbit</label>
                             <input type="date" name="date" value="{{ date('Y-m-d') }}" class="form-control" required>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label>Tanggal Acara</label>
                             <input type="date" name="due_date" value="" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Pengambilan</label>
+                            <input type="date" name="take_date" value="" class="form-control" required>
                         </div>
 
                         <div class="col-md-3">

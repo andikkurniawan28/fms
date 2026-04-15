@@ -19,6 +19,7 @@
                     <h5 class="mb-1">#{{ $production->code }}</h5>
                     <p class="mb-0">Tanggal Terbit: {{ $production->date }}</p>
                     <p class="mb-0">Tanggal Acara: {{ $production->due_date }}</p>
+                    <p class="mb-0">Tanggal Pengambilan: {{ $production->take_date }}</p>
                     {{-- <p class="mb-0">Status:
                         <span class="badge bg-label-primary">{{ $production->status }}</span>
                     </p> --}}

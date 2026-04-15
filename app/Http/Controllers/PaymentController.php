@@ -75,7 +75,8 @@ class PaymentController extends Controller
         $request->validate([
             'date' => 'required|date',
             'order_id' => 'required|exists:orders,id',
-            'total' => 'required'
+            'total' => 'required',
+            'via' => 'required'
         ]);
 
         $clean = fn($val) => (double) str_replace('.', '', $val ?? 0);
@@ -100,6 +101,7 @@ class PaymentController extends Controller
                 'user_id' => auth()->id(),
                 'order_id' => $order->id,
                 'total' => $total,
+                'via' => $request->via,
             ]);
 
             // Catat Jurnal
@@ -139,7 +141,8 @@ class PaymentController extends Controller
     {
         $request->validate([
             'date' => 'required|date',
-            'total' => 'required'
+            'total' => 'required',
+            'via' => 'required',
         ]);
 
         $clean = fn($val) => (double) str_replace('.', '', $val ?? 0);
@@ -166,6 +169,7 @@ class PaymentController extends Controller
                 'date' => $request->date,
                 'total' => $newTotal,
                 'user_id' => auth()->id(),
+                'via' => $request->via,
             ]);
 
             // Catat ulang jurnal

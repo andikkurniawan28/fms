@@ -95,6 +95,15 @@
                             </div>
 
                             <div class="mb-2">
+                                <label>Pembayaran lewat</label>
+                                <select name="via" class="form-control select2">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Cash">Cash</option>
+                                    <option value="Transfer">Transfer</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-2">
                                 <label>Sisa</label>
                                 <input type="text" name="left" id="left" class="form-control" readonly>
                             </div>

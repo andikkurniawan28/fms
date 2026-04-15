@@ -55,6 +55,10 @@
                         <td><strong>{{ number_format($payment->total,0,',','.') }}</strong></td>
                     </tr>
                     <tr>
+                        <th>Via</th>
+                        <td>{{ $payment->via ?? '-' }}</td>
+                    </tr>
+                    <tr>
                         <th>Sisa Tagihan Saat Ini</th>
                         <td>{{ number_format($payment->order->left ?? 0,0,',','.') }}</td>
                     </tr>
@@ -62,10 +66,10 @@
             </div>
 
             {{-- TERBILANG --}}
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <p class="mb-1"><strong>Terbilang:</strong></p>
                 <p class="text-muted" id="terbilang-text"></p>
-            </div>
+            </div> --}}
 
             {{-- FOOTER --}}
             <div class="row mt-5">

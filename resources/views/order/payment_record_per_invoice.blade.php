@@ -48,6 +48,7 @@
                             <th>Kode</th>
                             <th>Diterima oleh</th>
                             <th>Total</th>
+                            <th>Via</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,6 +67,7 @@
                             <td>{{ $item->code }}</td>
                             <td>{{ $item->user->name }}</td>
                             <td>{{ number_format($item->total,0,',','.') }}</td>
+                            <td>{{ $item->via }}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExpenseJournal;
-use App\Models\IncomeJournal;
 use App\Models\JournalItem;
 use App\Models\Order;
 use App\Models\Payment;

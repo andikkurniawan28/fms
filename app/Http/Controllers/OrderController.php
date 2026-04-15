@@ -155,6 +155,7 @@ class OrderController extends Controller
                     'user_id' => auth()->id(),
                     'order_id' => $order->id,
                     'total' => $paid,
+                    'via' => $request->via,
                 ]);
 
                 // Catat Jurnal
