@@ -145,7 +145,7 @@ class DatabaseSeeder extends Seeder
             ['id' => 6, 'group' => 'Modal', 'sub' => 'Modal', 'code' => '3102', 'name' => 'Prive', 'normal_balance' => 'Credit'],
             ['id' => 7, 'group' => 'Modal', 'sub' => 'Modal', 'code' => '3103', 'name' => 'Laba Ditahan', 'normal_balance' => 'Credit'],
             ['id' => 8, 'group' => 'Pendapatan', 'sub' => 'Pendapatan Usaha', 'code' => '5101', 'name' => 'Penjualan Produk', 'normal_balance' => 'Credit'],
-            ['id' => 9, 'group' => 'Pendapatan', 'sub' => 'Pendapatan Usaha', 'code' => '5102', 'name' => 'Pendapatan Ditangguhkan', 'normal_balance' => 'Credit'],
+            // ['id' => 9, 'group' => 'Pendapatan', 'sub' => 'Pendapatan Usaha', 'code' => '5102', 'name' => 'Pendapatan Ditangguhkan', 'normal_balance' => 'Credit'],
             ['id' => 10, 'group' => 'Pendapatan', 'sub' => 'Pendapatan Lain-lain', 'code' => '5201', 'name' => 'Pendapatan Lain-lain', 'normal_balance' => 'Credit'],
             ['id' => 11, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6101', 'name' => 'Beban Operasional', 'normal_balance' => 'Debit'],
             ['id' => 12, 'group' => 'Beban', 'sub' => 'Beban Operasional', 'code' => '6102', 'name' => 'Beban Sosial', 'normal_balance' => 'Debit'],

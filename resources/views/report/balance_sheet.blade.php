@@ -20,7 +20,7 @@
                     <input type="date"
                         id="date_from"
                         class="form-control"
-                        value="{{ date('Y-m-01') }}">
+                        value="2026-04-01">
                 </div>
 
                 <div class="col-md-3">

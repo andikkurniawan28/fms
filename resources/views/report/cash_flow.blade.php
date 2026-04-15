@@ -46,22 +46,25 @@
     <div class="card">
         <div class="card-body">
 
-            <table class="table table-bordered">
+            <div class="table-responsive">
 
-                <thead>
-                    <tr>
-                        <th>Tanggal</th>
-                        {{-- <th>No Jurnal</th> --}}
-                        <th>Keterangan</th>
-                        <th class="text-end">Masuk</th>
-                        <th class="text-end">Keluar</th>
-                        <th class="text-end">Saldo</th>
-                    </tr>
-                </thead>
+                <table class="table table-bordered">
 
-                <tbody id="table-body"></tbody>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            {{-- <th>No Jurnal</th> --}}
+                            <th>Keterangan</th>
+                            <th class="text-end">Masuk</th>
+                            <th class="text-end">Keluar</th>
+                            <th class="text-end">Saldo</th>
+                        </tr>
+                    </thead>
 
-            </table>
+                    <tbody id="table-body"></tbody>
+
+                </table>
+            </div>
 
         </div>
     </div>
