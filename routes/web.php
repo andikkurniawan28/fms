@@ -417,34 +417,32 @@ Route::middleware(['auth'])->group(function () {
     // BUKU BESAR
     Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Owner');
 
+    // LABA RUGI
+    Route::get('report_profit_loss',
+        [ProfitLossController::class,'index']
+    )->name('report_profit_loss.index');
+
+    // NERACA
+    Route::get('report_balance_sheet',
+        [BalanceSheetController::class,'index']
+    )->name('report_balance_sheet.index');
+
+    // ARUS KAS
+    Route::get('report_cash_flow',
+        [CashFlowController::class,'index']
+    )->name('report_cash_flow.index');
+
 });
 
 Route::post('ledger', [LedgerController::class, 'process'])->name('ledger.process');
-
-// LABA RUGI
-Route::get('report_profit_loss',
-    [ProfitLossController::class,'index']
-)->name('report_profit_loss.index');
 
 Route::post('report_profit_loss',
     [ProfitLossController::class,'process']
 )->name('report_profit_loss.process');
 
-
-// NERACA
-Route::get('report_balance_sheet',
-    [BalanceSheetController::class,'index']
-)->name('report_balance_sheet.index');
-
 Route::post('report_balance_sheet',
     [BalanceSheetController::class,'process']
 )->name('report_balance_sheet.process');
-
-
-// ARUS KAS
-Route::get('report_cash_flow',
-    [CashFlowController::class,'index']
-)->name('report_cash_flow.index');
 
 Route::post('report_cash_flow',
     [CashFlowController::class,'process']
