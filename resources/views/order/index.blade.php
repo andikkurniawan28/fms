@@ -19,6 +19,7 @@
                 <table id="orderTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center" width="100%">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Tanggal</th>
                             <th>Kode</th>
                             <th>Customer</th>
@@ -48,8 +49,9 @@
             processing: true,
             serverSide: true,
             ajax: "{{ route('order.index') }}",
-            order: [[0, 'asc']],
+            order: [[0, 'desc']],
             columns: [
+                { data: 'id', name: 'id' },
                 { data: 'date', name: 'date' },
                 { data: 'code', name: 'code' },
                 { data: 'customer', name: 'customer' },

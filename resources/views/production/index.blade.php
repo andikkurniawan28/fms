@@ -19,6 +19,7 @@
                 <table id="productionTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center" width="100%">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Tanggal Terbit</th>
                             <th>Tanggal Acara</th>
                             <th>Kode</th>
@@ -47,8 +48,9 @@
             processing: true,
             serverSide: true,
             ajax: "{{ route('production.index') }}",
-            order: [[0, 'asc']],
+            order: [[0, 'desc']],
             columns: [
+                { data: 'id', name: 'id' },
                 { data: 'date', name: 'date' },
                 { data: 'due_date', name: 'due_date' },
                 { data: 'code', name: 'code' },

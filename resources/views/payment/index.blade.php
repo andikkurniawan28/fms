@@ -19,6 +19,7 @@
                 <table id="paymentTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center" width="100%">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Tanggal</th>
                             <th>Kode</th>
                             <th>Order</th>
@@ -47,8 +48,9 @@
             processing: true,
             serverSide: true,
             ajax: "{{ route('payment.index') }}",
-            payment: [[0, 'asc']],
+            payment: [[0, 'desc']],
             columns: [
+                { data: 'id', name: 'id' },
                 { data: 'date', name: 'date' },
                 { data: 'code', name: 'code' },
                 { data: 'order', name: 'order' },

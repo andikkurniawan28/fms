@@ -19,9 +19,11 @@
                 <table id="income_journalTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Tanggal</th>
                             <th>Kode</th>
                             <th>Jenis</th>
+                            <th>Keterangan</th>
                             <th>Admin</th>
                             <th>Nominal</th>
                             <th>Aksi</th>
@@ -44,11 +46,13 @@
             processing: true,
             serverSide: true,
             ajax: "{{ route('income_journal.index') }}",
-            order: [[0, 'asc']],
+            order: [[0, 'desc']],
             columns: [
+                { data: 'id', name: 'id' },
                 { data: 'date', name: 'date' },
                 { data: 'code', name: 'code' },
                 { data: 'account', name: 'account' },
+                { data: 'description', name: 'description' },
                 { data: 'user', name: 'user' },
                 { data: 'total', name: 'total', render: function(data) { return formatRupiah(data); } },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
