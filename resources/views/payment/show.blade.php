@@ -39,7 +39,7 @@
             <div class="table-responsive mb-4">
                 <table class="table table-bordered">
                     <tr>
-                        <th width="30%">Kode Order</th>
+                        <th>Invoice</th>
                         <td>{{ $payment->order->code ?? '-' }}</td>
                     </tr>
                     <tr>
@@ -47,9 +47,55 @@
                         <td>{{ $payment->order->date ?? '-' }}</td>
                     </tr>
                     <tr>
+                        <th width="30%">Item</th>
+                        <td>
+                            <ul class="mb-0 list-unstyled">
+                                @forelse($payment->order->items as $item)
+                                    <li class="d-flex justify-content-between">
+                                        <span>{{ $item->product ?? '-' }}</span>
+                                        <span>Rp {{ number_format($item->amount ?? 0, 0, ',', '.') }}</span>
+                                    </li>
+                                @empty
+                                    <li class="text-muted">Tidak ada item</li>
+                                @endforelse
+
+                                <li><hr class="my-1"></li>
+
+                                <li class="d-flex justify-content-between">
+                                    <span>Subtotal</span>
+                                    <span>Rp {{ number_format($payment->order->subtotal ?? 0, 0, ',', '.') }}</span>
+                                </li>
+
+                                <li class="d-flex justify-content-between text-danger">
+                                    <span>- Diskon</span>
+                                    <span>Rp {{ number_format($payment->order->discount ?? 0, 0, ',', '.') }}</span>
+                                </li>
+
+                                <li class="d-flex justify-content-between text-success">
+                                    <span>+ Biaya</span>
+                                    <span>Rp {{ number_format($payment->order->expenses ?? 0, 0, ',', '.') }}</span>
+                                </li>
+
+                                <li class="d-flex justify-content-between text-success">
+                                    <span>+ Pajak</span>
+                                    <span>Rp {{ number_format($payment->order->taxes ?? 0, 0, ',', '.') }}</span>
+                                </li>
+
+                                <li><hr class="my-1"></li>
+
+                                <li class="d-flex justify-content-between fw-bold">
+                                    <span>= Grand Total</span>
+                                    <span>
+                                        Rp {{ number_format($payment->order->grand_total ?? 0, 0, ',', '.') }}
+                                    </span>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    {{-- <tr>
                         <th>Total Order</th>
                         <td>{{ number_format($payment->order->grand_total ?? 0,0,',','.') }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>Total Dibayar</th>
                         <td><strong>{{ number_format($payment->total,0,',','.') }}</strong></td>

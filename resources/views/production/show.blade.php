@@ -4,10 +4,11 @@
 @section('production_active', 'active')
 
 @section('content')
-<div class="container-xxl container-p-y">
+<div class="container-xxl container-p-y text-dark">
 
     <div class="card">
-        <div class="card-body">
+        {{-- <div class="card-body"> --}}
+        <div class="card-body text-dark" style="background: {{ $production->user->color }};">
 
             {{-- HEADER --}}
             <div class="d-flex justify-content-between mb-4">
@@ -42,8 +43,8 @@
 
             {{-- ITEMS --}}
             <div class="table-responsive mb-4">
-                <table class="table table-bproductioned">
-                    <thead class="table-light">
+                <table class="table table-bordered text-dark">
+                    <thead>
                         <tr>
                             <th>No</th>
                             <th>Barang</th>
@@ -84,7 +85,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <table class="table">
+                    <table class="table text-dark">
                         <tr>
                             <th>Subtotal</th>
                             <td class="text-end">{{ number_format($production->subtotal,0,',','.') }}</td>

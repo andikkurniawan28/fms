@@ -101,14 +101,18 @@
                             <th>Grand Total</th>
                             <td class="text-end"><strong>{{ number_format($order->grand_total,0,',','.') }}</strong></td>
                         </tr>
-                        {{-- <tr>
+                        <tr>
+                            <th>DP</th>
+                            <td class="text-end">{{ number_format($dp,0,',','.') }}</td>
+                        </tr>
+                        <tr>
                             <th>Dibayar</th>
-                            <td class="text-end">{{ number_format($order->paid,0,',','.') }}</td>
+                            <td class="text-end">{{ number_format($pembayaran,0,',','.') }}</td>
                         </tr>
                         <tr>
                             <th>Sisa</th>
-                            <td class="text-end">{{ number_format($order->left,0,',','.') }}</td>
-                        </tr> --}}
+                            <td class="text-end">{{ number_format($sisa,0,',','.') }}</td>
+                        </tr>
                     </table>
                 </div>
             </div>

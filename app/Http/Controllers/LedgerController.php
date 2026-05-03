@@ -24,14 +24,25 @@ class LedgerController extends Controller
             'account_id' => 'required'
         ]);
 
-        // $request = new stdClass();
-
-        // $request->account_id = 1;
-        // $request->date_from = "2026-04-01";
-        // $request->date_to = "2026-04-30";
-
         $account = Account::findOrFail($request->account_id);
 
+        // === SALDO SEBELUM PERIODE ===
+        $before = JournalItem::join('journals','journals.id','=','journal_items.journal_id')
+            ->where('account_id', $request->account_id)
+            ->where('journals.date', '<', $request->date_from)
+            ->selectRaw('
+                SUM(journal_items.debit) as debit,
+                SUM(journal_items.credit) as credit
+            ')
+            ->first();
+
+        if ($account->normal_balance == 'Debit') {
+            $saldo_awal = ($before->debit ?? 0) - ($before->credit ?? 0);
+        } else {
+            $saldo_awal = ($before->credit ?? 0) - ($before->debit ?? 0);
+        }
+
+        // === DATA PERIODE ===
         $ledger = JournalItem::with('journal')
             ->where('account_id', $request->account_id)
             ->whereHas('journal', function ($q) use ($request) {
@@ -51,20 +62,15 @@ class LedgerController extends Controller
             )
             ->get();
 
-
-        // saldo berjalan berdasarkan normal balance
-        $balance = 0;
+        // === SALDO BERJALAN (DIMULAI DARI SALDO AWAL) ===
+        $balance = $saldo_awal;
 
         foreach ($ledger as $row) {
 
             if ($account->normal_balance == 'Debit') {
-
                 $balance += ($row->debit - $row->credit);
-
             } else {
-
                 $balance += ($row->credit - $row->debit);
-
             }
 
             $row->balance = $balance;
@@ -72,6 +78,7 @@ class LedgerController extends Controller
 
         return response()->json([
             'account' => $account,
+            'saldo_awal' => $saldo_awal,
             'data' => $ledger
         ]);
     }

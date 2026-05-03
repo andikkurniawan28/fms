@@ -20,7 +20,7 @@
                     <input type="date"
                         id="date_from"
                         class="form-control"
-                        value="2026-04-01">
+                        value="{{ now()->startOfMonth()->format('Y-m-d') }}">
                 </div>
 
                 <div class="col-md-3">

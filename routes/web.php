@@ -19,6 +19,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\TerminController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -136,11 +137,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('production/{production}/edit', [ProductionController::class, 'edit'])
         ->name('production.edit')
-        ->middleware('role:Owner');
+        ->middleware('role:Owner,Admin');
 
     Route::put('production/{production}', [ProductionController::class, 'update'])
         ->name('production.update')
-        ->middleware('role:Owner');
+        ->middleware('role:Owner,Admin');
 
     Route::delete('production/{production}', [ProductionController::class, 'destroy'])
         ->name('production.destroy')
@@ -447,3 +448,5 @@ Route::post('report_balance_sheet',
 Route::post('report_cash_flow',
     [CashFlowController::class,'process']
 )->name('report_cash_flow.process');
+
+Route::get('test', TestController::class)->name('test');

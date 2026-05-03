@@ -7,7 +7,6 @@ use App\Models\Journal;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
-use App\Models\Product;
 use App\Models\Termin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,11 +56,38 @@ class OrderController extends Controller
         return view('order.index');
     }
 
+    // public function show(Order $order)
+    // {
+    //     $order->load(['customer', 'user', 'items']);
+
+    //     return view('order.show', compact('order'));
+    // }
+
     public function show(Order $order)
     {
-        $order->load(['customer', 'user', 'items']);
+        $order->load(['customer', 'user', 'items', 'payment']);
 
-        return view('order.show', compact('order'));
+        $payments = $order->payment->sortBy('id');
+
+        // DP = pembayaran pertama
+        $dp = $payments->first()?->total ?? 0;
+
+        // Total semua pembayaran
+        $total_payment = $payments->sum('total');
+
+        // Pembayaran setelah DP
+        $pembayaran = $total_payment - $dp;
+
+        // Sisa
+        $sisa = $order->grand_total - $total_payment;
+
+        return view('order.show', compact(
+            'order',
+            'dp',
+            'pembayaran',
+            'sisa',
+            'total_payment'
+        ));
     }
 
     public function create()

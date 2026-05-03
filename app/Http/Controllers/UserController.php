@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::with('role');
+            $data = User::where('id', '!=', 4)->with('role');
 
             return DataTables::of($data)
                 ->addIndexColumn()
