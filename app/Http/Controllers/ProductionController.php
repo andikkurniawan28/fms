@@ -15,7 +15,7 @@ class ProductionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Production::with(['customer', 'user'])->latest();
+            $data = Production::where('is_archived', 0)->with(['customer', 'user'])->latest();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -35,11 +35,13 @@ class ProductionController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('production.edit', $row->id);
                     $showUrl = route('production.show', $row->id);
+                    $archive = route('production.archive', $row->id);
                     $deleteUrl = route('production.destroy', $row->id);
 
                     return '<div class="btn-group">
                                 <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>
+                                <a href="' . $archive . '" class="btn btn-sm btn-secondary">Arsipkan</a>
                                 <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
                                     ' . csrf_field() . method_field('DELETE') . '
                                     <button class="btn btn-sm btn-danger">Hapus</button>
@@ -51,6 +53,39 @@ class ProductionController extends Controller
         }
 
         return view('production.index');
+    }
+
+    public function archived(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Production::where('is_archived', 1)->with(['customer', 'user'])->latest();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('customer', fn($row) => $row->customer->name ?? '-')
+                ->addColumn('user', fn($row) => $row->user->name ?? '-')
+                ->addColumn('order', fn($row) => $row->order->code ?? '-')
+                ->filterColumn('customer', function ($query, $keyword) {
+                    $query->whereHas('customer', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('user', function ($query, $keyword) {
+                    $query->whereHas('user', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->make(true);
+        }
+
+        return view('production.archived');
+    }
+
+    public function archive($id)
+    {
+        $production = Production::findOrFail($id);
+        $production->update(['is_archived' => 1]);
+        return redirect()->back()->with('success', 'SPK berhasil diarsip.');
     }
 
     public function show(Production $production)

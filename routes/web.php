@@ -123,6 +123,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('production.index')
         ->middleware('role:Owner,Admin');
 
+    Route::get('production-archived', [ProductionController::class, 'archived'])
+        ->name('production.archived')
+        ->middleware('role:Owner,Admin');
+
     Route::get('production/create', [ProductionController::class, 'create'])
         ->name('production.create')
         ->middleware('role:Owner,Admin');
@@ -141,6 +145,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::put('production/{production}', [ProductionController::class, 'update'])
         ->name('production.update')
+        ->middleware('role:Owner,Admin');
+
+    Route::get('production-archive/{id}', [ProductionController::class, 'archive'])
+        ->name('production.archive')
         ->middleware('role:Owner,Admin');
 
     Route::delete('production/{production}', [ProductionController::class, 'destroy'])

@@ -5,14 +5,7 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h1 class="h3 mb-3"><strong>Daftar SPK</strong></h1>
-
-    <div class="mb-3 btn-group">
-        <a href="{{ route('production.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Tambah
-        </a>
-        <a href="{{ route('production.archived') }}" class="btn btn-secondary ms-2"> <i class="bi bi-archive"></i> Arsip </a>
-    </div>
+    <h1 class="h3 mb-3"><strong>SPK Diarsipkan</strong></h1>
 
     <div class="card shadow-sm">
         <div class="card-body">
@@ -28,7 +21,6 @@
                             <th>Customer</th>
                             <th>Admin</th>
                             <th>Subtotal</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -48,7 +40,7 @@
         $('#productionTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('production.index') }}",
+            ajax: "{{ route('production.archived') }}",
             order: [[0, 'desc']],
             columns: [
                 { data: 'id', name: 'id' },
@@ -59,7 +51,6 @@
                 { data: 'customer', name: 'customer' },
                 { data: 'user', name: 'user' },
                 { data: 'subtotal', name: 'subtotal', render: function(data) { return formatRupiah(data); } },
-                { data: 'action', name: 'action', productionable: false, searchable: false }
             ]
         });
     });
