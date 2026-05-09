@@ -117,11 +117,25 @@
                 </div>
             </div>
 
+            {{-- FOOTER --}}
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    {{-- <p class="text-muted">Terima kasih atas pembayaran Anda.</p> --}}
+                </div>
+                <div class="col-md-6 text-end">
+                    {{-- <p>{{ $order->date }}</p> --}}
+                    <p>{{ \Carbon\Carbon::parse($order->date)->translatedFormat('d F Y') }}</p>
+                    <br><br>
+                    <p><strong>{{ $order->user->name }}</strong></p>
+                </div>
+            </div>
+
             {{-- ACTION --}}
-            <div class="text-end mt-4">
+            <div class="text-end mt-4 no-print">
                 <button onclick="window.print()" class="btn btn-primary">
                     Print
                 </button>
+
                 <a href="{{ route('order.index') }}" class="btn btn-secondary">
                     Kembali
                 </a>

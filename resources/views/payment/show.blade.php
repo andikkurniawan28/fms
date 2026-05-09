@@ -123,14 +123,15 @@
                     <p class="text-muted">Terima kasih atas pembayaran Anda.</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p>{{ $payment->date }}</p>
+                    {{-- <p>{{ $payment->date }}</p> --}}
+                    <p>{{ \Carbon\Carbon::parse($payment->date)->translatedFormat('d F Y') }}</p>
                     <br><br>
                     <p><strong>{{ $payment->user->name }}</strong></p>
                 </div>
             </div>
 
             {{-- ACTION --}}
-            <div class="text-end mt-4">
+            <div class="text-end mt-4 no-print">
                 <button onclick="window.print()" class="btn btn-primary">
                     Print
                 </button>

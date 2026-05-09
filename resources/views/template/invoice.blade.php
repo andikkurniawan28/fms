@@ -5,6 +5,13 @@
 <head>
     @include('template.head')
     @yield('style')
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 
 <body>

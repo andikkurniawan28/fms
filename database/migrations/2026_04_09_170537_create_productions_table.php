@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->double('subtotal');
+            $table->boolean('is_archived')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

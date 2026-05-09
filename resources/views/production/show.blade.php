@@ -119,7 +119,7 @@
             </div>
 
             {{-- ACTION --}}
-            <div class="text-end mt-4">
+            <div class="text-end mt-4 no-print">
                 <button onclick="window.print()" class="btn btn-primary">
                     Print
                 </button>
