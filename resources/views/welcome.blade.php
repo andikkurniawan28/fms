@@ -32,6 +32,8 @@
         <div class="col-lg-4">
             <div class="row">
 
+
+                @if(auth()->user()->role->name == "Owner")
                 <div class="col-12 mb-4">
                     <div class="card">
                         <div class="card-body">
@@ -41,6 +43,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <div class="col-12 mb-4">
                     <div class="card">
@@ -55,6 +58,7 @@
             </div>
         </div>
 
+        @if(auth()->user()->role->name == "Owner")
         {{-- ROW 2 --}}
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
@@ -75,6 +79,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100">
@@ -96,6 +101,7 @@
             </div>
         </div>
 
+        @if(auth()->user()->role->name == "Owner")
         {{-- ROW 3 (INSIGHT TAMBAHAN BIAR PADAT) --}}
         <div class="col-lg-6 mb-4">
             <div class="card h-100">
@@ -120,6 +126,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         <div class="col-lg-6 mb-4">
             <div class="card h-100">

@@ -101,7 +101,7 @@
                             <div class="mb-2">
                                 <label>DP / Dibayar</label>
                                 <input type="text" name="paid" id="paid" class="form-control"
-                                    value="{{ number_format($order->paid, 0, ',', '.') }}">
+                                    value="{{ number_format($order->paid, 0, ',', '.') }}" readonly>
                             </div>
 
                             <div class="mb-2">

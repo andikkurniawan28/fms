@@ -432,9 +432,9 @@ Route::middleware(['auth'])->group(function () {
     )->name('report_profit_loss.index');
 
     // NERACA
-    Route::get('report_balance_sheet',
-        [BalanceSheetController::class,'index']
-    )->name('report_balance_sheet.index');
+    // Route::get('report_balance_sheet',
+    //     [BalanceSheetController::class,'index']
+    // )->name('report_balance_sheet.index');
 
     // ARUS KAS
     Route::get('report_cash_flow',

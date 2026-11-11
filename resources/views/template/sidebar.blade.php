@@ -117,13 +117,13 @@
                 @endif
 
                 {{-- NERACA (Owner) --}}
-                @if (in_array($role, ['Owner']))
+                {{-- @if (in_array($role, ['Owner']))
                     <li class="menu-item @yield('balance_sheet_active')">
                         <a href="{{ route('report_balance_sheet.index') }}" class="menu-link">
                             <div>Neraca</div>
                         </a>
                     </li>
-                @endif
+                @endif --}}
 
             </ul>
         </li>

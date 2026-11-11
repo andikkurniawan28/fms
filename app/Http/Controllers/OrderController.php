@@ -211,7 +211,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function update(Request $request, Order $order)
+    public function update_old(Request $request, Order $order)
     {
         $request->validate([
             'date' => 'required|date',
@@ -324,6 +324,99 @@ class OrderController extends Controller
                     $payment = $existingPayment;
                     Journal::where('payment_id', $payment->id)->delete();
                 }
+            }
+
+            DB::commit();
+
+            return redirect()->route('order.index')
+                ->with('success', 'Order berhasil diperbarui.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function update(Request $request, Order $order)
+    {
+        $request->validate([
+            'date' => 'required|date',
+            'customer_id' => 'required|exists:customers,id',
+            'termin_id' => 'required|exists:termins,id',
+            'items' => 'required|array',
+            'items.*.product_id' => 'required',
+            'items.*.qty' => 'required|numeric|min:1',
+            'items.*.price' => 'required',
+        ]);
+
+        $clean = function ($val) {
+            return (double) str_replace('.', '', $val ?? 0);
+        };
+
+        DB::beginTransaction();
+
+        try {
+            // 🔢 1. Hitung ulang subtotal barang yang baru diedit
+            $subtotal = 0;
+
+            foreach ($request->items as $item) {
+                $price = $clean($item['price']);
+                $qty = $item['qty'];
+                $subtotal += $qty * $price;
+            }
+
+            $discount = $clean($request->discount);
+            $expenses = $clean($request->expenses);
+            $taxes = $clean($request->taxes);
+
+            $grandTotal = $subtotal - $discount + $expenses + $taxes;
+
+            // ✨ 2. KUNCI UTAMA PERBAIKAN:
+            // Jangan ambil pembayaran dari form input ($request->paid),
+            // melainkan hitung otomatis dari total data yang ada di tabel payments!
+            $totalPaid = Payment::where('order_id', $order->id)->sum('total');
+            $left = $grandTotal - $totalPaid;
+
+            // 🧠 3. Tentukan status secara otomatis
+            $status = $totalPaid == 0
+                ? 'Belum Bayar'
+                : ($left > 0 ? 'Sudah DP' : 'Lunas');
+
+            // ✅ 4. Update data order (kolom paid aman dari overwrite)
+            $order->update([
+                'date' => $request->date,
+                'customer_id' => $request->customer_id,
+                'user_id' => auth()->id(),
+                'termin_id' => $request->termin_id,
+                'subtotal' => $subtotal,
+                'discount' => $discount,
+                'expenses' => $expenses,
+                'taxes' => $taxes,
+                'grand_total' => $grandTotal,
+                'paid' => $totalPaid, // Menggunakan total akumulasi payments yang sah
+                'left' => $left,
+                'status' => $status,
+            ]);
+
+            // Hapus jurnal piutang lama, buat baru
+            Journal::where('order_id', $order->id)->whereNull('payment_id')->delete();
+            Journal::logReceivable($order);
+
+            // 🔥 5. Perbarui items pesanan
+            $order->items()->delete();
+
+            foreach ($request->items as $item) {
+                $price = $clean($item['price']);
+                $qty = $item['qty'];
+
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product' => $item['product_id'],
+                    'qty' => $qty,
+                    'price' => $price,
+                    'amount' => $qty * $price,
+                ]);
             }
 
             DB::commit();
